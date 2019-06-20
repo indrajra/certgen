@@ -1,7 +1,8 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.log4j.BasicConfigurator;
+
+import org.apache.log4j.PropertyConfigurator;
 import org.incredible.pojos.CertificateExtension;
 import org.incredible.pojos.ob.Assertion;
 
@@ -62,18 +63,22 @@ public class Main {
      * read csv file
      **/
     private static void readMapperFile() {
-
         try {
+
+
             csvProperties = mapper.readValue(new File(csvFileName), HashMap.class);
         } catch (IOException io) {
             System.out.println(io);
+            logger.error("Input model  mapper file does not exits {}, {}", csvFileName, io.getMessage());
         }
 
 
     }
 
     public static void main(String[] args) {
-        BasicConfigurator.configure();
+
+        PropertyConfigurator.configure("src/main/resources/log4j.properties");
+
         readMapperFile();
         boolean isFileExits = csvReader.isExists(fileName);
         if (isFileExits) {
@@ -82,11 +87,10 @@ public class Main {
                 setCertModelsList(csvParser);
 
             } catch (IOException io) {
-                logger.error("File Not found" + io);
-                // TODO - verify your file name and try again
+                logger.error("CSV Parsing exception {}, {}", io.getMessage(), io.getStackTrace());
             }
         } else {
-            logger.error("File not found with this filename");
+            logger.error("Input CSV file not found {}", fileName);
         }
 
 
@@ -97,7 +101,6 @@ public class Main {
             CertificateExtension certificate = certificateFactory.createCertificate(certModelsList.get(row));
             generateQRCodeForCertificate(certificate);
             generateHtmlTemplateForCertificate(certificate);
-            System.out.println(certModelsList.get(row));
         }
 
     }
@@ -109,8 +112,8 @@ public class Main {
     public static CertModel getInputModel(CSVRecord csvRecord) {
         CertModelFactory certModelFactory = new CertModelFactory(csvProperties);
         CertModel model = certModelFactory.create(csvRecord);
-        logger.info("csv row" + csvRecord + "Certificate model of each row" + model.toString());
-        // TODO: print csv (input) and print inputModel (derivation from the input)
+        logger.info("csv row => {}", csvRecord);
+        logger.info("Model created is => {}", model.toString());
         return model;
     }
 
@@ -119,8 +122,7 @@ public class Main {
         for (CSVRecord csvRecord : csvParser) {
             CertModel model = getInputModel(csvRecord);
             if (null == model) {
-                logger.error("Cannot generate certificate for csvRecord please check give proper input");
-                // TODO: Can't generate certificate for csvRecord
+                logger.error("Cannot generate certificate for row {}. Invalid input", csvRecord.getRecordNumber());
             } else {
                 certModelsList.add(model);
             }

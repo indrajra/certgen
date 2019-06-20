@@ -17,7 +17,7 @@ public class CSVReader {
                     .withIgnoreHeaderCase()
                     .withTrim().withNullString(""));
 
-          return  csvParser;
+          return csvParser;
     }
 
     public boolean isExists(String filename) {

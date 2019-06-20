@@ -3,7 +3,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Date;
 
-// TODO: CertModel and CertModelBuilder
 public class CertModel {
 
     private String CourseName;
@@ -46,16 +45,6 @@ public class CertModel {
     }
 
 
-    @Override
-    public String toString() {
-        String stringRep = null;
-        try {
-            stringRep = mapper.writeValueAsString(this);
-        } catch (JsonProcessingException jpe) {
-            jpe.printStackTrace();
-        }
-        return stringRep;
-    }
 
 
     public CertModel() {
@@ -132,5 +121,17 @@ public class CertModel {
     public CertModel setIssuer(String issuer) {
         Issuer = issuer;
         return this;
+    }
+
+
+    @Override
+    public String toString() {
+        String stringRep = null;
+        try {
+            stringRep = mapper.writeValueAsString(this);
+        } catch (JsonProcessingException jpe) {
+            jpe.printStackTrace();
+        }
+        return stringRep;
     }
 }

@@ -1,14 +1,20 @@
 package builders;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.incredible.pojos.ob.Assertion;
 
 public class AssertionObjectBuilder implements IBuilder<Assertion> {
 
 
-    private Assertion assertion;
+    public Assertion assertion = new Assertion();
 
-    public AssertionObjectBuilder(String context) {
+    private static ObjectMapper mapper = new ObjectMapper();
+
+
+    public AssertionObjectBuilder setContext(String context) {
         assertion.setContext(context);
+        return this;
     }
 
 
@@ -29,5 +35,16 @@ public class AssertionObjectBuilder implements IBuilder<Assertion> {
     @Override
     public Assertion build() {
         return this.assertion;
+    }
+
+    @Override
+    public String toString() {
+        String stringRep = null;
+        try {
+            stringRep = mapper.writeValueAsString(this);
+        } catch (JsonProcessingException jpe) {
+            jpe.printStackTrace();
+        }
+        return stringRep;
     }
 }
