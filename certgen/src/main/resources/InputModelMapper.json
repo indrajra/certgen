@@ -1,0 +1,10 @@
+{
+  "CourseName": "CourseName",
+  "RecipientName":"RecipientName",
+  "RecipientEmail":"RecipientEmail",
+  "RecipientPhone": "RecipientPhone",
+  "CertificateName": "CertificateName",
+  "CertificateDescription": "CertificateDescription",
+  "CertificateLogo": "CertificateLogo",
+  "Issuer": "Issuer"
+}
