@@ -12,37 +12,14 @@ public class CertModel {
     private String CertificateName;
     private String CertificateDescription;
     private String CertificateLogo;
-    private Date IssuedDate;
+    private String IssuedDate;
     private String Issuer;
-    private Date ValidFrom;
-    private Date Expiry;
+    private String ValidFrom;
+    private String Expiry;
+    private String SignatoryList;
     private static ObjectMapper mapper = new ObjectMapper();
 
 
-    public Date getIssuedDate() {
-        return IssuedDate;
-    }
-
-    public void setIssuedDate(Date issuedDate) {
-        IssuedDate = issuedDate;
-    }
-
-    public Date getValidFrom() {
-        return ValidFrom;
-    }
-
-    public void setValidFrom(Date validFrom) {
-        ValidFrom = validFrom;
-    }
-
-
-    public Date getExpiry() {
-        return Expiry;
-    }
-
-    public void setExpiry(Date expiry) {
-        Expiry = expiry;
-    }
 
 
 
@@ -123,6 +100,38 @@ public class CertModel {
         return this;
     }
 
+    public String getSignatoryList() {
+        return SignatoryList;
+    }
+
+    public void setSignatoryList(String signatoryList) {
+        SignatoryList = signatoryList;
+    }
+
+    public String  getIssuedDate() {
+        return IssuedDate;
+    }
+
+    public void setIssuedDate(String issuedDate) {
+        IssuedDate = issuedDate;
+    }
+
+    public String getValidFrom() {
+        return ValidFrom;
+    }
+
+    public void setValidFrom(String validFrom) {
+        ValidFrom = validFrom;
+    }
+
+
+    public String getExpiry() {
+        return Expiry;
+    }
+
+    public void setExpiry(String expiry) {
+        Expiry = expiry;
+    }
 
     @Override
     public String toString() {

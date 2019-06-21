@@ -3,6 +3,8 @@ package org.incredible.pojos.ob;
 
 import org.incredible.pojos.CompositeIdentityObject;
 
+import java.util.UUID;
+
 /**
  * Exactly per OpenBadges v2 specification
  */
@@ -10,7 +12,7 @@ public class Assertion extends OBBase {
     /**
      * HTTP URL or UUID from urn:uuid namespace
      */
-    private String id;
+    private UUID id;
 
     /**
      * Simple string "Assertion" or URLs or IRIs of current context
@@ -55,17 +57,17 @@ public class Assertion extends OBBase {
      */
     private String revocationReason;
 
-    protected Assertion() {}
+    public Assertion() {}
 
     public Assertion(String ctx) {
         setContext(ctx);
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

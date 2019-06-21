@@ -3,9 +3,14 @@ package builders;
 import org.incredible.pojos.CompositeIdentityObject;
 import org.incredible.pojos.Gender;
 
+import java.util.UUID;
+
 public class CompositeIdentityObjectBuilder {
 
-    private CompositeIdentityObject compositeIdentityObject;
+    private CompositeIdentityObject compositeIdentityObject = new CompositeIdentityObject();
+
+    public CompositeIdentityObjectBuilder() {
+    }
 
     public CompositeIdentityObjectBuilder(String context) {
         compositeIdentityObject.setContext(context);
@@ -36,14 +41,43 @@ public class CompositeIdentityObjectBuilder {
         return this;
     }
 
-    public  CompositeIdentityObjectBuilder setPhoto(String photo) {
+    public CompositeIdentityObjectBuilder setPhoto(String photo) {
         compositeIdentityObject.setPhoto(photo);
         return this;
     }
-    public  CompositeIdentityObjectBuilder setUrl(String url) {
+
+    public CompositeIdentityObjectBuilder setUrl(String url) {
         compositeIdentityObject.setUrl(url);
         return this;
     }
+
+    public CompositeIdentityObjectBuilder setId(UUID id) {
+        compositeIdentityObject.setIdentity(id);
+        return this;
+    }
+
+    public CompositeIdentityObjectBuilder setType(String[] type) {
+        compositeIdentityObject.setType(type);
+        return this;
+    }
+
+    public CompositeIdentityObjectBuilder setHashed(Boolean hashed) {
+        compositeIdentityObject.setHashed(hashed);
+        return this;
+    }
+
+
+    public CompositeIdentityObjectBuilder  setEmail(String email) {
+        compositeIdentityObject.setEmail(email);
+        return this;
+    }
+
+
+    public CompositeIdentityObjectBuilder setPhone(String phone) {
+        compositeIdentityObject.setPhone(phone);
+        return this;
+    }
+
     public CompositeIdentityObject build() {
         return this.compositeIdentityObject;
     }

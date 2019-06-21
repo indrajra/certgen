@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.HashMap;
 
 public class CertModelFactory {
@@ -29,7 +30,7 @@ public class CertModelFactory {
             return certModel;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
-            logger.error("Exception"+ e);
+            logger.error("Exception in creating certmodel" + e);
             return null;
         }
     }
@@ -44,11 +45,11 @@ public class CertModelFactory {
             }
         }
 
-        if(parameterTypes.length == 0) {
+        if (parameterTypes.length == 0) {
             return null;
 
         } else
-        return parameterTypes[0];
+            return parameterTypes[0];
     }
 }
 

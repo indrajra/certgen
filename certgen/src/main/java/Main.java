@@ -1,3 +1,4 @@
+import builders.CertificateExtensionBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -32,7 +33,7 @@ public class Main {
      * to get the file name
      **/
 
-    static String fileName = "/Users/aishwarya/workspace/certgen/certgen/src/main/resources/ecreds input csv - Sheet1.csv";
+    static String fileName = "/Users/aishwarya/workspace/certgen/certgen/src/main/resources/ecredsInputCsv-Sheet1.csv";
 
 
     /**

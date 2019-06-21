@@ -1,10 +1,15 @@
 package org.incredible.pojos.ob;
 
+import java.util.UUID;
+
 public class BadgeClass extends OBBase {
     /**
      * Unique IRI for the badge - HTTP URL or URN
      */
-    private String id;
+    private UUID id;
+
+    public BadgeClass() {
+    }
 
     /**
      * In most cases, this will simply be the string BadgeClass. An array including BadgeClass and other string
@@ -44,11 +49,11 @@ public class BadgeClass extends OBBase {
         setContext(ctx);
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

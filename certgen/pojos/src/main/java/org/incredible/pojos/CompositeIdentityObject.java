@@ -43,6 +43,10 @@ public class CompositeIdentityObject extends IdentityObject {
      */
     private String url;
 
+    private String email;
+
+    private String phone;
+
     public CompositeIdentityObject() {
         setType(type);
     }
@@ -109,5 +113,21 @@ public class CompositeIdentityObject extends IdentityObject {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

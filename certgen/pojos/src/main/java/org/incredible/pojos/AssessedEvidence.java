@@ -29,6 +29,7 @@ public class AssessedEvidence extends Evidence {
      */
     private Signature signature;
 
+
     public AssessedEvidence(String ctx) {
         String[] type = new String[]{"Evidence", "Extension", "extensions:AssessedEvidence"};
         setType(type);

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.incredible.pojos.ob.Assertion;
 
+import java.util.UUID;
+
 public class AssertionObjectBuilder implements IBuilder<Assertion> {
 
 
@@ -18,7 +20,7 @@ public class AssertionObjectBuilder implements IBuilder<Assertion> {
     }
 
 
-    public AssertionObjectBuilder setId(String id) {
+    public AssertionObjectBuilder setId(UUID id) {
         assertion.setId(id);
         return this;
     }
