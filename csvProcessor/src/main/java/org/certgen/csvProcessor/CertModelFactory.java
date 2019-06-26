@@ -1,3 +1,5 @@
+package org.certgen.csvProcessor;
+
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,9 +8,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+
 public class CertModelFactory {
     private HashMap<String, String> csvProperties;
-    private static Logger logger = LoggerFactory.getLogger(CertModel.class);
+    private static Logger logger = LoggerFactory.getLogger(CertModelFactory.class);
 
 
     public CertModelFactory(HashMap<String, String> csvprop) {
