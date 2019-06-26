@@ -1,4 +1,4 @@
-package org.certgen.csvProcessor;
+package org.incredible.csvProcessor;
 
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import org.incredible.certProcessor.CertModel;
 
 public class CertModelFactory {
     private HashMap<String, String> csvProperties;

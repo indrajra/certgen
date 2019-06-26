@@ -48,7 +48,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>org.certgen.csvProcessor.Main</mainClass>
+                            <mainClass>org.incredible.csvProcessor.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

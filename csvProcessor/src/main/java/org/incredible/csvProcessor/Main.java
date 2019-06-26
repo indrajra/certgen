@@ -1,8 +1,10 @@
-package org.certgen.csvProcessor;
+package org.incredible.csvProcessor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.incredible.certProcessor.CertModel;
+import org.incredible.certProcessor.CertificateFactory;
 import org.incredible.pojos.CertificateExtension;
 import org.incredible.pojos.ob.Assertion;
 import org.slf4j.Logger;
@@ -15,7 +17,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 
 public class Main {
 
