@@ -6,8 +6,8 @@ import org.incredible.pojos.ob.Assertion;
 
 public class AssertionObjectBuilder implements IBuilder<Assertion> {
 
-
-    public Assertion assertion = new Assertion();
+    // TODO - Fix context
+    public Assertion assertion = new Assertion("");
 
     private static ObjectMapper mapper = new ObjectMapper();
 

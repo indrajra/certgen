@@ -1,18 +1,18 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-
-import org.apache.log4j.PropertyConfigurator;
 import org.incredible.pojos.CertificateExtension;
 import org.incredible.pojos.ob.Assertion;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Main {
@@ -32,14 +32,14 @@ public class Main {
      * to get the file name
      **/
 
-    static String fileName = "/Users/aishwarya/workspace/certgen/certgen/src/main/resources/ecreds input csv - Sheet1.csv";
+    static String csvFileName = "input.csv";
 
 
     /**
      * csv file name
      **/
 
-    static String csvFileName = "/Users/aishwarya/workspace/certgen/certgen/src/main/resources/InputModelMapper.json";
+    static String modelFileName = "CertModelMapper.json";
 
 
     static CertificateFactory certificateFactory = new CertificateFactory();
@@ -59,40 +59,67 @@ public class Main {
 
     private static HashMap<String, String> csvProperties;
 
+
+    private static String readFromFile(String file) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        StringBuilder sb = new StringBuilder();
+        try {
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (Exception e) {
+            return "";
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
+        return sb.toString();
+    }
+
+    private static String getPath(String file) {
+        String result = null;
+        try {
+            result = Main.class.getClassLoader().getResource(file).getFile();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        } finally {
+            return result;
+        }
+    }
     /**
      * read csv file
      **/
-    private static void readMapperFile() {
+    private static void readFile(String fileName) {
         try {
-
-
-            csvProperties = mapper.readValue(new File(csvFileName), HashMap.class);
+            String csvContent = new String(Files.readAllBytes(new File(getPath(fileName)).toPath()));
+            csvProperties = mapper.readValue(csvContent, HashMap.class);
         } catch (IOException io) {
-            System.out.println(io);
-            logger.error("Input model  mapper file does not exits {}, {}", csvFileName, io.getMessage());
+            logger.error("Input model  mapper file does not exits {}, {}", modelFileName, io.getMessage());
         }
-
-
     }
 
-    public static void main(String[] args) {
-
-        PropertyConfigurator.configure("src/main/resources/log4j.properties");
-
-        readMapperFile();
-        boolean isFileExits = csvReader.isExists(fileName);
+    private static void readCSV(String filename) {
+        boolean isFileExits = csvReader.isExists(filename);
         if (isFileExits) {
             try {
-                CSVParser csvParser = csvReader.readCsvFileRows(fileName);
+                CSVParser csvParser = csvReader.readCsvFileRows(filename);
                 setCertModelsList(csvParser);
 
             } catch (IOException io) {
                 logger.error("CSV Parsing exception {}, {}", io.getMessage(), io.getStackTrace());
             }
         } else {
-            logger.error("Input CSV file not found {}", fileName);
+            logger.error("Input CSV file not found {}", csvFileName);
         }
 
+        logger.info("Finished reading the csv file");
+    }
+
+    public static void main(String[] args) {
+        readFile(modelFileName);
+        readCSV(getPath(csvFileName));
 
         /** iterate each inputmodel to generate certificate **/
 

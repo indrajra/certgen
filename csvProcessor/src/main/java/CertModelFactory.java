@@ -1,5 +1,4 @@
 import org.apache.commons.csv.CSVRecord;
-import org.incredible.pojos.CertificateExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

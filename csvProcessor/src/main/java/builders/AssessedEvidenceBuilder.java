@@ -6,7 +6,8 @@ import org.incredible.pojos.Signature;
 
 public class AssessedEvidenceBuilder implements IBuilder<AssessedEvidence> {
 
-    private AssessedEvidence assessedEvidence = new AssessedEvidence();
+    // TODO - Fix context
+    private AssessedEvidence assessedEvidence = new AssessedEvidence("");
 
     public AssessedEvidenceBuilder setSubject(String subject) {
         assessedEvidence.setSubject(subject);
