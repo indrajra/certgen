@@ -8,8 +8,6 @@ import org.incredible.pojos.ob.BadgeClass;
 import org.incredible.pojos.ob.Evidence;
 
 
-import java.util.UUID;
-
 public class CertificateExtensionBuilder implements IBuilder<CertificateExtension> {
 
     CertificateExtension certificateExtension;

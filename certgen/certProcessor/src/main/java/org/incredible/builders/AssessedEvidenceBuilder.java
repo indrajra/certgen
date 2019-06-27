@@ -10,7 +10,7 @@ public class AssessedEvidenceBuilder implements IBuilder<AssessedEvidence> {
 
     private String context;
     private AssessedEvidence assessedEvidence;
-    // TODO - Fix context
+    // TODO - Fix context - done
 
     public AssessedEvidenceBuilder(String context) {
 //        this.context = context;

@@ -8,10 +8,10 @@ import java.util.UUID;
 
 public class AssertionObjectBuilder implements IBuilder<Assertion> {
 
-    // TODO - Fix context
+    // TODO - Fix context - done
 
     public  String context;
-    public Assertion assertion = new Assertion(context);
+    public Assertion assertion;
 
 
     public AssertionObjectBuilder(String context) {
