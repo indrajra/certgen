@@ -4,7 +4,6 @@ import org.incredible.pojos.ob.AlignmentObject;
 import org.incredible.pojos.ob.BadgeClass;
 import org.incredible.pojos.ob.Criteria;
 
-import java.util.UUID;
 
 public class BadgeClassBuilder implements IBuilder<BadgeClass> {
 
@@ -12,7 +11,7 @@ public class BadgeClassBuilder implements IBuilder<BadgeClass> {
 
 
 
-    public BadgeClassBuilder setId(UUID id) {
+    public BadgeClassBuilder setId(String id) {
         badgeClass.setId(id);
         return this;
 

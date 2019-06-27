@@ -1,14 +1,14 @@
 package org.incredible.pojos.ob;
 
 
-import java.util.UUID;
+
 
 public class Evidence extends OBBase {
     /**
      * identifies the evidence from the urn:uuid namespace or a HTTP URL of a
      * webpage which presents the evidence
      */
-    private UUID id;
+    private String id;
 
     private String[] type;
 
@@ -45,11 +45,11 @@ public class Evidence extends OBBase {
         setContext(ctx);
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -20,7 +20,7 @@ public class AssertionObjectBuilder implements IBuilder<Assertion> {
     }
 
 
-    public AssertionObjectBuilder setId(UUID id) {
+    public AssertionObjectBuilder setId(String id) {
         assertion.setId(id);
         return this;
     }

@@ -1,13 +1,12 @@
 package org.incredible.pojos.ob;
 
-import java.util.UUID;
 
 public class IdentityObject extends OBBase {
     /**
      * Value of the annotation
      * Example: father's or a spouse's name
      */
-    private UUID identity;
+    private String identity;
 
     /**
      * IRI of the property by which the recipient of a badge is identified.
@@ -25,11 +24,11 @@ public class IdentityObject extends OBBase {
      */
     private String salt;
 
-    public UUID getIdentity() {
+    public String getIdentity() {
         return identity;
     }
 
-    public void setIdentity(UUID identity) {
+    public void setIdentity(String identity) {
         this.identity = identity;
     }
 

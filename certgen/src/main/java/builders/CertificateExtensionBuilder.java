@@ -24,7 +24,7 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
         return this;
     }
 
-    public CertificateExtensionBuilder setId(UUID id) {
+    public CertificateExtensionBuilder setId(String id) {
         certificateExtension.setId(id);
         return this;
     }

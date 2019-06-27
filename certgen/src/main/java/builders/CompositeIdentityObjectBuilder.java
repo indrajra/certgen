@@ -3,8 +3,6 @@ package builders;
 import org.incredible.pojos.CompositeIdentityObject;
 import org.incredible.pojos.Gender;
 
-import java.util.UUID;
-
 public class CompositeIdentityObjectBuilder {
 
     private CompositeIdentityObject compositeIdentityObject = new CompositeIdentityObject();
@@ -51,7 +49,7 @@ public class CompositeIdentityObjectBuilder {
         return this;
     }
 
-    public CompositeIdentityObjectBuilder setId(UUID id) {
+    public CompositeIdentityObjectBuilder setId(String id) {
         compositeIdentityObject.setIdentity(id);
         return this;
     }
@@ -63,18 +61,6 @@ public class CompositeIdentityObjectBuilder {
 
     public CompositeIdentityObjectBuilder setHashed(Boolean hashed) {
         compositeIdentityObject.setHashed(hashed);
-        return this;
-    }
-
-
-    public CompositeIdentityObjectBuilder  setEmail(String email) {
-        compositeIdentityObject.setEmail(email);
-        return this;
-    }
-
-
-    public CompositeIdentityObjectBuilder setPhone(String phone) {
-        compositeIdentityObject.setPhone(phone);
         return this;
     }
 

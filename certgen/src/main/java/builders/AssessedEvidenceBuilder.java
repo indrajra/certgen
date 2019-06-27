@@ -17,7 +17,7 @@ public class AssessedEvidenceBuilder implements IBuilder<AssessedEvidence> {
     private AssessedEvidence assessedEvidence = new AssessedEvidence(context);
 
 
-    public AssessedEvidenceBuilder setId(UUID id) {
+    public AssessedEvidenceBuilder setId(String id) {
         assessedEvidence.setId(id);
         return this;
     }

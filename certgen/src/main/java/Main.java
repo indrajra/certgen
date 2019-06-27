@@ -1,4 +1,4 @@
-import builders.CertificateExtensionBuilder;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -60,6 +60,13 @@ public class Main {
 
     private static HashMap<String, String> csvProperties;
 
+
+    private static final String DOMAIN = "http://localhost:8080";
+    private static final String CONTEXT_FILE_NAME = "v1/context.json";
+
+    private static String context;
+
+
     /**
      * read csv file
      **/
@@ -99,7 +106,7 @@ public class Main {
 
         for (int row = 0; row < certModelsList.size(); row++) {
             // TODO - Generating certificate for <recipient> and index
-            CertificateExtension certificate = certificateFactory.createCertificate(certModelsList.get(row));
+            CertificateExtension certificate = certificateFactory.createCertificate(certModelsList.get(row), context);
             generateQRCodeForCertificate(certificate);
             generateHtmlTemplateForCertificate(certificate);
         }
@@ -144,6 +151,7 @@ public class Main {
     private static void generateHtmlTemplateForCertificate(Assertion assertion) {
 
     }
+
 
 
 }

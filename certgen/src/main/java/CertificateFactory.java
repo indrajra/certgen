@@ -9,16 +9,15 @@ import org.incredible.pojos.ob.Criteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.time.Instant;
 import java.util.UUID;
 
 public class CertificateFactory {
 
     private static String context;
-    private static UUID uuid = UUID.randomUUID();
+    private static String uuid = UUID.randomUUID().toString();
+
     private static Logger logger = LoggerFactory.getLogger(CertificateFactory.class);
 
 
@@ -27,12 +26,9 @@ public class CertificateFactory {
      */
     private static final String DOMAIN = "http://localhost:8080";
     private static final String CONTEXT_FILE_NAME = "v1/context.json";
+    static CertificateExtension createCertificate(CertModel certModel, String context)  {
 
-
-
-    static CertificateExtension createCertificate(CertModel certModel)  {
-
-        initContext();
+//        initContext();
         CertificateExtensionBuilder certificateExtensionBuilder = new CertificateExtensionBuilder(context);
         CompositeIdentityObjectBuilder compositeIdentityObjectBuilder = new CompositeIdentityObjectBuilder();
         BadgeClassBuilder badgeClassBuilder = new BadgeClassBuilder();
@@ -48,8 +44,7 @@ public class CertificateFactory {
          *  recipent object
          *  **/
         compositeIdentityObjectBuilder.setName(certModel.getRecipientName()).setId(uuid).setHashed(true).
-                setType(new String[]{"urn"}).setEmail(certModel.getRecipientEmail()).
-                setPhone(certModel.getRecipientPhone());
+                setType(new String[]{"urn"});
 
         /**
          * badge class object
@@ -81,7 +76,7 @@ public class CertificateFactory {
      * Loads the JSON-LD context
      * @throws IOException
      */
-    private static void initContext()  {
+//    private static void initContext()  {
 //        try {
 //            ClassLoader classLoader = CertificateFactory.class.getClassLoader();
 //
@@ -90,7 +85,7 @@ public class CertificateFactory {
 //                throw new IOException("Context file not found");
 //            }
 
-            context = DOMAIN + "/" + CONTEXT_FILE_NAME;
+//            context = DOMAIN + "/" + CONTEXT_FILE_NAME;
 //            System.out.println("Context file Found : " + file.exists());
 //        }
 
@@ -98,7 +93,7 @@ public class CertificateFactory {
 
 //        }
 
-    }
+//    }
 
 
 }

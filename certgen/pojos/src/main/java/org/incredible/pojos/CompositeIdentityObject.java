@@ -32,20 +32,16 @@ public class CompositeIdentityObject extends IdentityObject {
     private String tag;
 
     /**
-     *  Uniform resource name
-     *  Required in the absence of URL
+     * Uniform resource name
+     * Required in the absence of URL
      */
     private String urn;
 
     /**
-     *  Uniform resource locator
-     *  Required in the absence of URN
+     * Uniform resource locator
+     * Required in the absence of URN
      */
     private String url;
-
-    private String email;
-
-    private String phone;
 
     public CompositeIdentityObject() {
         setType(type);
@@ -113,21 +109,5 @@ public class CompositeIdentityObject extends IdentityObject {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 }
