@@ -1,0 +1,119 @@
+{
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "scd": "https://skillcredentialspec.org/v1#",
+    "ob": "https://w3id.org/openbadges/v2#",
+    "schema": "http://schema.org/",
+    "sec": "https://w3id.org/security/v1#",
+    "wid": "https://w3id.org/identity/v1#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "AlignmentObject": "schema:AlignmentObject",
+    "AnnotatedExtension": "scd:AnnotatedExtension",
+    "Assertion": "ob:Assertion",
+    "AssessedEvidence": "scd:AssessedEvidence",
+    "Assessment": "scd:Assessment",
+    "AwardingBody": "ob:Issuer",
+    "BadgeClass": "ob:BadgeClass",
+    "CertificateExtension": "scd:CertificateExtension",
+    "CompositeIdentity": "scd:CompositeIdentity",
+    "Credential": "ob:Assertion",
+    "Criteria": "ob:Criteria",
+    "CryptographicKey": "ob:CryptographicKey",
+    "Duration": "scd:Duration",
+    "Evidence": "ob:Evidence",
+    "Extension": "ob:Extension",
+    "IdentityObject": "ob:IdentityObject",
+    "LinkedDataSignature2015": "sec:LinkedDataSignature2015",
+    "Profile": "ob:Profile",
+    "RsaSignature2018": "wid:RsaSignature2018",
+    "SignatoryExtension": "scd:SignatoryExtension",
+    "TrainingEvidence": "scd:TrainingEvidence",
+
+    "assessment": { "@id": "scd:assessment", "@type": "scd:Assessment" },
+    "assessedBy": { "@id": "scd:assessedBy", "@type": "@id" },
+    "assessedOn": { "@id": "scd:assessedOn", "@type": "xsd:dateTime" },
+    "grade": { "@id": "scd:GradeAssessment" },
+    "marks": { "@id": "scd:MarksAssessment" },
+    "percentage": { "@id": "scd:PercentageAssessment" },
+    "percentile": { "@id": "scd:PercentileAssessment" },
+    "rank": { "@id": "scd:RankAssessment" },
+
+    "alignment": { "@id": "schema:alignment" },
+    "targetCode": { "@id": "ob:targetCode" },
+    "targetDescription": { "@id": "schema:targetDescription" },
+    "targetFramework": { "@id": "schema:targetFramework" },
+    "targetName": { "@id": "schema:targetName" },
+    "targetUrl": { "@id": "schema:targetUrl" },
+
+    "annotation": { "@id": "scd:annotation" },
+    "awardedBy": { "@id": "ob:issuer" },
+    "awardedOn": { "@id": "ob:issuedOn" },
+    "awardedThrough": { "@id": "schema:issuedThrough" },
+    "components": { "@id": "scd:components", "@type": "scd:IdentityComponent", "@container": "@set" },
+    "composite": { "@id": "scd:CompositeIdentity" },
+    "designation": { "@id": "scd:designation" },
+    "dob": { "@id": "scd:DoBIdentityComponent" },
+    "duration": { "@id": "scd:duration", "@type": "scd:Duration" },
+    "endDate": { "@id": "schema:endDate" },
+    "equivalent": { "@id": "scd:equivalent" },
+    "gender": { "@id": "scd:GenderIdentityComponent" },
+    "maxValue": { "@id": "scd:maxValue" },
+    "minValue": { "@id": "scd:minValue" },
+    "passValue": { "@id": "scd:passValue" },
+    "photo": { "@id": "scd:PhotoIdentityComponent", "@type": "schema:url" },
+    "printUri": { "@id": "scd:printUri", "@type": "schema:url" },
+    "session": { "@id": "scd:session" },
+    "signatory": { "@id": "scd:signatory", "@type": "scd:SignatoryExtension" },
+    "startDate": { "@id": "schema:startDate" },
+    "subject": { "@id": "scd:subject", "@type": "scd:CompositeIdentity" },
+    "tag": { "@id": "scd:TagIdentity" },
+    "training": { "@id": "scd:training", "@type": "scd:TrainingExtension" },
+    "trainer": { "@id": "scd:trainer", "@type": "ob:Profile" },
+    "validFrom": { "@id": "schema:validFrom" },
+    "value": { "@id": "scd:value" },
+
+    "badge": { "@id": "ob:badge" },
+    "criteria": { "@id": "ob:criteria" },
+    "description": { "@id": "schema:description" },
+    "evidence": { "@id": "ob:evidence", "@container": "@set" },
+    "identity": { "@id": "ob:identity" },
+    "image": { "@id": "schema:image"},
+    "name": { "@id": "schema:name" },
+    "narrative": { "@id": "ob:narrative" },
+    "recipient": { "@id": "ob:recipient", "@type": "scd:CompositeIdentity" },
+    "related": { "@id": "ob:related" },
+    "url": { "@id": "schema:url" },
+    "verification": { "@id": "ob:verification" },
+
+    "created": { "@id": "sec:created" },
+    "creator": { "@id": "sec:creator" },
+    "domain": { "@id": "sec:domain" },
+    "nonce": { "@id": "sec:nonce" },
+    "owner": { "@id": "sec:owner" },
+    "publicKey": { "@id": "sec:publicKey" },
+    "publicKeyPem": { "@id": "sec:publicKeyPem" },
+    "signature": { "@id": "sec:signature" },
+    "signatureValue": { "@id": "sec:signatureValue" }
+  },
+  "ob:validation": [{
+    "ob:validatesType": "scd:AssessedEvidence",
+    "ob:validationSchema": "https://skillcredentialspec.org/v1/schema/AssessedEvidence.json"
+  }, {
+    "ob:validatesType": "scd:Assessment",
+    "ob:validationSchema": "https://skillcredentialspec.org/v1/schema/Assessment.json"
+  }, {
+    "ob:validatesType": "scd:CertificateExtension",
+    "ob:validationSchema": "https://skillcredentialspec.org/v1/schema/CertificateExtension.json"
+  }, {
+    "ob:validatesType": "scd:CompositeIdentity",
+    "ob:validationSchema": "https://skillcredentialspec.org/v1/schema/CompositeIdentity.json"
+  }, {
+    "ob:validatesType": "scd:SignatoryExtension",
+    "ob:validationSchema": "https://skillcredentialspec.org/v1/schema/SignatoryExtension.json"
+  }, {
+    "ob:validatesType": "scd:TrainingEvidence",
+    "ob:validationSchema": "https://skillcredentialspec.org/v1/schema/TrainingEvidence.json"
+  }]
+}

@@ -7,9 +7,10 @@
 # Intellij files
 *.iml
 *.idea
+**/*.lst
 
 # Outputs
-target/*
+**/target/
 
 # BlueJ files
 *.ctxt
