@@ -1,4 +1,4 @@
-package builders;
+package org.incredible.builders;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,8 +8,17 @@ import java.util.UUID;
 
 public class AssertionObjectBuilder implements IBuilder<Assertion> {
 
+    // TODO - Fix context
 
-    public Assertion assertion = new Assertion();
+    public  String context;
+    public Assertion assertion = new Assertion(context);
+
+
+    public AssertionObjectBuilder(String context) {
+//        this.context = context;
+        assertion = new Assertion(context);
+    }
+
 
     private static ObjectMapper mapper = new ObjectMapper();
 

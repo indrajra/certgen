@@ -1,4 +1,4 @@
-package builders;
+package org.incredible.builders;
 
 import org.incredible.pojos.Duration;
 import org.incredible.pojos.TrainingEvidence;
