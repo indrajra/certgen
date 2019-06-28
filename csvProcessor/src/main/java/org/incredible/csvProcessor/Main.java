@@ -73,6 +73,7 @@ public class Main {
 
     private static final String DOMAIN = "http://localhost:8080";
     private static final String CONTEXT_FILE_NAME = "context.json";
+    private static final String HTML_TEMPLATE_NAME = "template.html";
 
     private static String context;
 
@@ -168,25 +169,16 @@ public class Main {
         List<String> filename = new ArrayList<>();
 
         text.add(certificateExtension.getRecipient().getName());
-
         data.add(certificateExtension.getBadge().getName());
         filename.add(certificateExtension.getId());
+
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();
         qrCodeGenerationModel.setText(text);
         qrCodeGenerationModel.setFileName(filename);
-        qrCodeGenerationModel.setFileFormat("png");
         qrCodeGenerationModel.setData(data);
-        qrCodeGenerationModel.setErrorCorrectionLevel("L");
-        qrCodeGenerationModel.setColorModel("black");
-        qrCodeGenerationModel.setTextFontName("Verdana");
-        qrCodeGenerationModel.setImageMargin(2);
-        qrCodeGenerationModel.setImageBorderSize(2);
-        qrCodeGenerationModel.setPixelsPerBlock(6);
-        qrCodeGenerationModel.setQrCodeMargin(4);
-        qrCodeGenerationModel.setTextCharacterSpacing(1);
-        qrCodeGenerationModel.setQrCodeMarginBottom(2);
-        qrCodeGenerationModel.setTextFontSize(10);
+
         QRCodeImageGenerator qrCodeImageGenerator = new QRCodeImageGenerator();
+
         try {
             QrcodeList = qrCodeImageGenerator.createQRImages(qrCodeGenerationModel, "container", "path");
 
@@ -200,19 +192,21 @@ public class Main {
      * generate Html Template for certificate
      **/
     private static void generateHtmlTemplateForCertificate(Assertion assertion) {
-        File htmlTemplateFile = new File("/Users/aishwarya/workspace/certgen/csvProcessor/src/main/resources/template.html");
+        File htmlTemplateFile = new File(getPath(HTML_TEMPLATE_NAME));
         String htmlString = null;
+        File file = new File(assertion.getId() + ".png");
+        String path = file.getPath();
+
         try {
             htmlString = FileUtils.readFileToString(htmlTemplateFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        htmlString = htmlString.replace("$title", "certifiate");
+        htmlString = htmlString.replace("$title", "certificate");
         htmlString = htmlString.replace("$recipient", assertion.getRecipient().getName());
-        htmlString = htmlString.replace("$img", "/Users/aishwarya/workspace/certgen/csvProcessor/" + assertion.getId() + ".png");
+        htmlString = htmlString.replace("$img", path);
         htmlString = htmlString.replace("$course", assertion.getBadge().getName());
-        File newHtmlFile = new File("/Users/aishwarya/workspace/certgen/csvProcessor/src/main/resources/" + assertion.getId() + ".html");
+        File newHtmlFile = new File(assertion.getId() + ".html");
         try {
             FileUtils.writeStringToFile(newHtmlFile, htmlString);
         } catch (IOException e) {
@@ -223,7 +217,7 @@ public class Main {
 
     private static void initContext() {
         try {
-            ClassLoader classLoader = CertificateFactory.class.getClassLoader();
+            ClassLoader classLoader = Main.class.getClassLoader();
 
             File file = new File(classLoader.getResource(CONTEXT_FILE_NAME).getFile());
             if (file == null) {

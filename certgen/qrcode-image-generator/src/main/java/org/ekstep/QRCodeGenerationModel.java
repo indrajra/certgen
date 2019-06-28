@@ -5,23 +5,27 @@ import java.util.List;
 public class QRCodeGenerationModel {
 
     private List<String> data;
-    private String errorCorrectionLevel;
-    private int pixelsPerBlock;
-    private int qrCodeMargin;
+    private String errorCorrectionLevel = "L";
+    private int pixelsPerBlock = 6;
+    private int qrCodeMargin = 4;
     private List<String> text;
-    private String textFontName;
-    private int textFontSize;
-    private double textCharacterSpacing;
-    private int imageBorderSize;
-    private String colorModel;
+    private String textFontName = "Verdana";
+    private int textFontSize = 10;
+    private double textCharacterSpacing = 1;
+    private int imageBorderSize = 0;
+    private String colorModel = "black";
     private List<String> fileName;
-    private String fileFormat;
-    private int qrCodeMarginBottom;
-    private int imageMargin;
+    private String fileFormat = "png";
+    private int qrCodeMarginBottom = 4;
+    private int imageMargin = 2;
 
-    public int getImageMargin() { return imageMargin; }
+    public int getImageMargin() {
+        return imageMargin;
+    }
 
-    public void setImageMargin(int imageMargin) { this.imageMargin = imageMargin; }
+    public void setImageMargin(int imageMargin) {
+        this.imageMargin = imageMargin;
+    }
 
     public int getQrCodeMarginBottom() {
         return qrCodeMarginBottom;

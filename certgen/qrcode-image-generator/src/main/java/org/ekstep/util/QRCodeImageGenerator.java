@@ -72,13 +72,6 @@ public class QRCodeImageGenerator {
             File finalImageFile = new File(fileName + "." + imageFormat);
             ImageIO.write(qrImage, imageFormat, finalImageFile);
             fileList.add(finalImageFile);
-
-//            try {
-//                String imageDownloadUrl = CloudStorageUtil.uploadFile(container, path, finalImageFile, false);
-//                QRCodeCassandraConnector.updateDownloadUrl(fileName, imageDownloadUrl);
-//            } catch(Exception e) {
-//                //ignore exception and proceed
-//            }
         }
 
         return fileList;
