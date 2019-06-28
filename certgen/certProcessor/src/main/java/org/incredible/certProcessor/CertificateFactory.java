@@ -8,16 +8,16 @@ import org.incredible.pojos.CertificateExtension;
 import org.incredible.pojos.RankAssessment;
 import org.incredible.pojos.ob.Criteria;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 public class CertificateFactory {
 
-    private static String uuid = UUID.randomUUID().toString();
+    private static String uuid;
 
     private static Logger logger = LoggerFactory.getLogger(CertificateFactory.class);
 
@@ -26,8 +26,9 @@ public class CertificateFactory {
      * The domain that holds the contexts for public consumption
      */
 
-    public CertificateExtension createCertificate(CertModel certModel, String context)  {
-
+    public CertificateExtension createCertificate(CertModel certModel, String context) {
+        uuid = UUID.randomUUID().toString();
+        System.out.println(uuid);
         CertificateExtensionBuilder certificateExtensionBuilder = new CertificateExtensionBuilder(context);
         CompositeIdentityObjectBuilder compositeIdentityObjectBuilder = new CompositeIdentityObjectBuilder();
         BadgeClassBuilder badgeClassBuilder = new BadgeClassBuilder();

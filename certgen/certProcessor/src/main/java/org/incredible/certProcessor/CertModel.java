@@ -21,11 +21,6 @@ public class CertModel {
     private String SignatoryList;
     private static ObjectMapper mapper = new ObjectMapper();
 
-
-
-
-
-
     public CertModel() {
     }
 

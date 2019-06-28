@@ -8,7 +8,6 @@ public class AssessedEvidenceBuilder implements IBuilder<AssessedEvidence> {
 
 
 
-    private String context;
     private AssessedEvidence assessedEvidence;
     // TODO - Fix context - done
 
