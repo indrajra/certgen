@@ -8,16 +8,10 @@ import java.util.UUID;
 
 public class AssertionObjectBuilder implements IBuilder<Assertion> {
 
-    // TODO - Fix context - done
-
     public  String context;
     public Assertion assertion;
 
 
-    public AssertionObjectBuilder(String context) {
-//        this.context = context;
-        assertion = new Assertion(context);
-    }
 
 
     private static ObjectMapper mapper = new ObjectMapper();

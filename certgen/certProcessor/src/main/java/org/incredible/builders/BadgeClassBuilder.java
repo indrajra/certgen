@@ -7,9 +7,12 @@ import org.incredible.pojos.ob.Criteria;
 
 public class BadgeClassBuilder implements IBuilder<BadgeClass> {
 
-    private BadgeClass badgeClass = new BadgeClass();
 
+    private BadgeClass badgeClass;
 
+    public BadgeClassBuilder(String context) {
+        badgeClass = new BadgeClass(context);
+    }
 
     public BadgeClassBuilder setId(String id) {
         badgeClass.setId(id);
