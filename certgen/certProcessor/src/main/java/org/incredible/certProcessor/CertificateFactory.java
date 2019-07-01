@@ -30,8 +30,8 @@ public class CertificateFactory {
         uuid = UUID.randomUUID().toString();
         System.out.println(uuid);
         CertificateExtensionBuilder certificateExtensionBuilder = new CertificateExtensionBuilder(context);
-        CompositeIdentityObjectBuilder compositeIdentityObjectBuilder = new CompositeIdentityObjectBuilder();
-        BadgeClassBuilder badgeClassBuilder = new BadgeClassBuilder();
+        CompositeIdentityObjectBuilder compositeIdentityObjectBuilder = new CompositeIdentityObjectBuilder(context);
+        BadgeClassBuilder badgeClassBuilder = new BadgeClassBuilder(context);
         AssessedEvidenceBuilder assessedEvidenceBuilder = new AssessedEvidenceBuilder(context);
 
 
