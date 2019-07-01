@@ -46,6 +46,8 @@ public class CertificateFactory {
         compositeIdentityObjectBuilder.setName(certModel.getRecipientName()).setId(uuid).setHashed(true).
                 setType(new String[]{"urn"});
 
+        System.out.println(compositeIdentityObjectBuilder.build()+ "composite identity object");
+
         /**
          * badge class object
          * **/
