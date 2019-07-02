@@ -127,8 +127,8 @@ public class Main {
         for (int row = 0; row < certModelsList.size(); row++) {
             // TODO - Generating certificate for <recipient> and index
             CertificateExtension certificate = certificateFactory.createCertificate(certModelsList.get(row), context);
-//            generateQRCodeForCertificate(certificate);
-//            generateHtmlTemplateForCertificate(certificate);
+            generateQRCodeForCertificate(certificate);
+            generateHtmlTemplateForCertificate(certificate);
         }
 
 
@@ -212,6 +212,13 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    private static void sendSmsToUSer(Assertion assertion) {
+        SMSDeliver smSdeliver = new SMSDeliver();
+        smSdeliver.sendSMS();
+
 
     }
 

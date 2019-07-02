@@ -28,7 +28,6 @@ public class CertificateFactory {
 
     public CertificateExtension createCertificate(CertModel certModel, String context) {
         uuid = UUID.randomUUID().toString();
-        System.out.println(uuid);
         CertificateExtensionBuilder certificateExtensionBuilder = new CertificateExtensionBuilder(context);
         CompositeIdentityObjectBuilder compositeIdentityObjectBuilder = new CompositeIdentityObjectBuilder(context);
         BadgeClassBuilder badgeClassBuilder = new BadgeClassBuilder(context);
@@ -43,10 +42,9 @@ public class CertificateFactory {
         /**
          *  recipent object
          *  **/
-        compositeIdentityObjectBuilder.setName(certModel.getRecipientName()).setId(uuid).setHashed(true).
-                setType(new String[]{"urn"});
-
-        System.out.println(compositeIdentityObjectBuilder.build()+ "composite identity object");
+        compositeIdentityObjectBuilder.setName(certModel.getRecipientName()).setId(certModel.getRecipientPhone())
+                .setHashed(true).
+                setType(new String[]{"phone"});
 
         /**
          * badge class object
@@ -57,18 +55,21 @@ public class CertificateFactory {
                 .setImage(certModel.getCertificateLogo()).
                 setIssuer(certModel.getIssuer());
 
+
         /**
          *  assessed evidence object
          **/
 
         assessedEvidenceBuilder.setAssessedBy("https://dgt.example.gov.in/iti-assessor.json");
 
-
+        /**
+         * Certificate extension object
+         */
         certificateExtensionBuilder.setId(uuid).setRecipent(compositeIdentityObjectBuilder.build())
-                .setBadge(badgeClassBuilder.build()).setEvidence(assessedEvidenceBuilder.build());
+                .setBadge(badgeClassBuilder.build()).setEvidence(assessedEvidenceBuilder.build())
+                .setIssuedOn(certModel.getIssuedDate()).setExpires(certModel.getExpiry());
 
         logger.info("certificate extension => {}", certificateExtensionBuilder.build());
-        System.out.println(certificateExtensionBuilder.build());
 
         return certificateExtensionBuilder.build();
     }
