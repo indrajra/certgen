@@ -215,13 +215,6 @@ public class Main {
 
     }
 
-    private static void sendSmsToUSer(Assertion assertion) {
-        SMSDeliver smSdeliver = new SMSDeliver();
-        smSdeliver.sendSMS();
-
-
-    }
-
     private static void initContext() {
         try {
             ClassLoader classLoader = Main.class.getClassLoader();

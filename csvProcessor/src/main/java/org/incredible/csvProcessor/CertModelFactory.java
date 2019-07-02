@@ -6,10 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 import org.incredible.certProcessor.CertModel;
@@ -33,8 +29,9 @@ public class CertModelFactory {
                 Class params = getParamType(methodName);
                 Method method = certModel.getClass().getMethod(methodName, params);
                 method.setAccessible(true);
-                if (member.getValue().equals("Expiry")) {
-                    expiry = calculateExpiryDateOfCertificate(csvRecord.get(member.getValue()), csvRecord.get("IssuedDate"));
+                if (member.getKey().equals("Expiry")) {
+                    ExpiryDateValuates expiryDateValuates = new ExpiryDateValuates(csvRecord.get("IssuedDate"));
+                    expiry = expiryDateValuates.getExpiryDate(csvRecord.get(member.getKey()));
                     method.invoke(certModel, expiry);
                 } else
                     method.invoke(certModel, csvRecord.get(member.getValue()));
@@ -56,47 +53,11 @@ public class CertModelFactory {
                 break;
             }
         }
-
         if (parameterTypes.length == 0) {
             return null;
 
         } else
             return parameterTypes[0];
-    }
-
-
-    private String calculateExpiryDateOfCertificate(String expiryDate, String issueDate) {
-        try {
-            /**
-             to split expiry date of form (2m 2y)
-             */
-            String[] splitExpiry = expiryDate.split(" ");
-
-            Calendar cal = Calendar.getInstance();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(issueDate);
-            cal.setTime(date);
-
-            for (int index = 0; index < splitExpiry.length; index++) {
-                if (splitExpiry[index].endsWith("d")) {
-                    cal.add(Calendar.DATE, Integer.parseInt(splitExpiry[index].substring(0, splitExpiry[index].length() - 1)));
-                } else if (splitExpiry[index].endsWith("m")) {
-                    cal.add(Calendar.MONTH, Integer.parseInt(splitExpiry[index].substring(0, splitExpiry[index].length() - 1)));
-                } else if (splitExpiry[index].endsWith("y")) {
-                    cal.add(Calendar.YEAR, Integer.parseInt(splitExpiry[index].substring(0, splitExpiry[index].length() - 1)));
-                } else {
-                    return expiryDate;
-                }
-
-            }
-            return simpleDateFormat.format(cal.getTime());
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-
     }
 
 

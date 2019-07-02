@@ -43,7 +43,7 @@ public class CertificateFactory {
          *  recipent object
          *  **/
         compositeIdentityObjectBuilder.setName(certModel.getRecipientName()).setId(certModel.getRecipientPhone())
-                .setHashed(true).
+                .setHashed(false).
                 setType(new String[]{"phone"});
 
         /**
@@ -69,6 +69,8 @@ public class CertificateFactory {
                 .setBadge(badgeClassBuilder.build()).setEvidence(assessedEvidenceBuilder.build())
                 .setIssuedOn(certModel.getIssuedDate()).setExpires(certModel.getExpiry());
 
+
+        System.out.println("compositeIdentityObjectBuilder.build()"+ compositeIdentityObjectBuilder.build());
         logger.info("certificate extension => {}", certificateExtensionBuilder.build());
 
         return certificateExtensionBuilder.build();
