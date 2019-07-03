@@ -67,10 +67,8 @@ public class CertificateFactory {
          */
         certificateExtensionBuilder.setId(uuid).setRecipent(compositeIdentityObjectBuilder.build())
                 .setBadge(badgeClassBuilder.build()).setEvidence(assessedEvidenceBuilder.build())
-                .setIssuedOn(certModel.getIssuedDate()).setExpires(certModel.getExpiry());
+                .setIssuedOn(certModel.getIssuedDate()).setExpires(certModel.getExpiry()).setValidFrom(certModel.getValidFrom());
 
-
-        System.out.println("compositeIdentityObjectBuilder.build()"+ compositeIdentityObjectBuilder.build());
         logger.info("certificate extension => {}", certificateExtensionBuilder.build());
 
         return certificateExtensionBuilder.build();

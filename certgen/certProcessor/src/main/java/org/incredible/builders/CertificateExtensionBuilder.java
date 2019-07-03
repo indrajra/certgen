@@ -1,6 +1,6 @@
 package org.incredible.builders;
 
-import org.incredible.pojos.AssessedEvidence;
+
 import org.incredible.pojos.CertificateExtension;
 import org.incredible.pojos.CompositeIdentityObject;
 import org.incredible.pojos.Signature;
@@ -40,8 +40,8 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
     }
 
     public CertificateExtensionBuilder setIssuedOn(String issuedOn) {
-            certificateExtension.setIssuedOn(issuedOn);
-            return this;
+        certificateExtension.setIssuedOn(issuedOn);
+        return this;
 
     }
 
@@ -61,12 +61,12 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
         return this;
     }
 
-    public  CertificateExtensionBuilder setBadge(BadgeClass badge) {
-       certificateExtension.setBadge(badge);
-       return this;
+    public CertificateExtensionBuilder setBadge(BadgeClass badge) {
+        certificateExtension.setBadge(badge);
+        return this;
     }
 
-    public  CertificateExtensionBuilder setEvidence(Evidence evidence) {
+    public CertificateExtensionBuilder setEvidence(Evidence evidence) {
         certificateExtension.setEvidence(evidence);
         return this;
     }
@@ -76,9 +76,14 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
         return this;
     }
 
-
     @Override
     public CertificateExtension build() {
-        return this.certificateExtension;
+        return certificateExtension;
+    }
+
+    @Override
+    public String toString() {
+        return certificateExtension.toString();
+
     }
 }

@@ -21,7 +21,6 @@ public class CertModelFactory {
     }
 
     public CertModel create(CSVRecord csvRecord) {
-        String expiry;
         try {
             CertModel certModel = new CertModel();
             for (HashMap.Entry<String, String> member : csvProperties.entrySet()) {
@@ -29,12 +28,7 @@ public class CertModelFactory {
                 Class params = getParamType(methodName);
                 Method method = certModel.getClass().getMethod(methodName, params);
                 method.setAccessible(true);
-                if (member.getKey().equals("Expiry")) {
-                    ExpiryDateValuates expiryDateValuates = new ExpiryDateValuates(csvRecord.get("IssuedDate"));
-                    expiry = expiryDateValuates.getExpiryDate(csvRecord.get(member.getKey()));
-                    method.invoke(certModel, expiry);
-                } else
-                    method.invoke(certModel, csvRecord.get(member.getValue()));
+                method.invoke(certModel, csvRecord.get(member.getValue()));
             }
             return certModel;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {

@@ -1,17 +1,24 @@
-package org.incredible.csvProcessor;
+package org.incredible.certProcessor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class ExpiryDateValuates {
-
+public class ExpiryDateValuator implements IEvaluator {
     public String issuedDate;
 
-    public ExpiryDateValuates(String issuedDate) {
+    public ExpiryDateValuator(String issuedDate) {
         this.issuedDate = issuedDate;
     }
+
+    @Override
+    public String evaluates(Object inputVal) {
+        return getExpiryDate((String) inputVal);
+    }
+
 
     public String getExpiryDate(String expiryDate) {
         try {
@@ -19,7 +26,6 @@ public class ExpiryDateValuates {
              to split expiry date of form (2m 2y)
              */
             String[] splitExpiry = expiryDate.split(" ");
-
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(issuedDate);
@@ -46,5 +52,6 @@ public class ExpiryDateValuates {
 
 
     }
+
 
 }

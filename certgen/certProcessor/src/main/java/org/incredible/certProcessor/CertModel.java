@@ -105,7 +105,7 @@ public class CertModel {
         SignatoryList = signatoryList;
     }
 
-    public String  getIssuedDate() {
+    public String getIssuedDate() {
         return IssuedDate;
     }
 
@@ -127,7 +127,8 @@ public class CertModel {
     }
 
     public void setExpiry(String expiry) {
-        Expiry = expiry;
+        ExpiryDateValuator valuator = new ExpiryDateValuator(this.getIssuedDate());
+        Expiry = valuator.evaluates(expiry);
     }
 
     @Override
