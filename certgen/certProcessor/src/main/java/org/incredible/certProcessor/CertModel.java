@@ -3,7 +3,7 @@ package org.incredible.certProcessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.Date;
+
 
 public class CertModel {
 
@@ -93,6 +93,7 @@ public class CertModel {
     }
 
     public CertModel setIssuer(String issuer) {
+
         Issuer = issuer;
         return this;
     }
@@ -110,7 +111,10 @@ public class CertModel {
     }
 
     public void setIssuedDate(String issuedDate) {
-        IssuedDate = issuedDate;
+
+        IssuedDateValuator issuedDateValuator = new IssuedDateValuator();
+        IssuedDate = issuedDateValuator.evaluates(issuedDate);
+
     }
 
     public String getValidFrom() {

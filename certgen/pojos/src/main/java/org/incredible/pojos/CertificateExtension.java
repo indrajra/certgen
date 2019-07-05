@@ -89,32 +89,34 @@ public class CertificateExtension extends Assertion {
     public void setSignature(Signature signature) {
         this.signature = signature;
     }
-
-    @Override
-    public String toString() {
-
-        Map<String, Object> map = mapper.convertValue(this, new TypeReference<Map<String, Object>>() {
-        });
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (entry.getValue() != null) {
-                if (!(entry.getValue() instanceof String)) {
-                    if (entry.getKey() != "id" && entry.getKey() != "type" && !(entry.getValue() instanceof Boolean)) {
-                        Map<String, Object> ChildObject = mapper.convertValue(entry.getValue(), new TypeReference<Map<String, Object>>() {
-                        });
-                        ChildObject.remove("@context");
-                        map.remove(entry.getValue());
-                        map.put(entry.getKey(), ChildObject);
-                    }
-                }
-            }
-        }
-
-        try {
-            return mapper.writeValueAsString(map);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
+    
+//
+//    @Override
+//    public String toString() {
+//
+//        Map<String, Object> map = mapper.convertValue(this, new TypeReference<Map<String, Object>>() {
+//        });
+//        for (Map.Entry<String, Object> entry : map.entrySet()) {
+//            if (entry.getValue() != null) {
+//                if (!(entry.getValue() instanceof String) && !(entry.getValue() instanceof Boolean)) {
+//                if (entry.getKey() != "id" && entry.getKey() != "type") {
+//                    Map<String, Object> ChildObject = mapper.convertValue(entry.getValue(), new TypeReference<Map<String, Object>>() {
+//                    });
+//                    ChildObject.remove("@context");
+//                    map.remove(entry.getValue());
+//                    map.put(entry.getKey(), ChildObject);
+//                }
+//            }
+//
+//            }
+//        }
+//
+//        try {
+//            return mapper.writeValueAsString(map);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//
+//    }
 }

@@ -4,7 +4,7 @@ import org.incredible.pojos.Assessment;
 
 public class AssessmentBuilder implements IBuilder<Assessment> {
 
-    Assessment assessment;
+    Assessment assessment = new Assessment();
 
 
     public AssessmentBuilder setType(String[] type) {

@@ -71,7 +71,7 @@ public class Main {
     private static HashMap<String, String> csvProperties;
 
 
-    private static final String DOMAIN = "http://localhost:8080";
+    private static final String DOMAIN = "http://localhost:8080/_schemas";
     private static final String CONTEXT_FILE_NAME = "context.json";
     private static final String HTML_TEMPLATE_NAME = "template.html";
 

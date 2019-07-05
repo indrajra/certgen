@@ -4,8 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class ExpiryDateValuator implements IEvaluator {
     public String issuedDate;
@@ -23,13 +22,15 @@ public class ExpiryDateValuator implements IEvaluator {
     public String getExpiryDate(String expiryDate) {
         try {
             /**
-             to split expiry date of form (2m 2y)
+             to split expiry dates of form (2m 2y)
              */
             String[] splitExpiry = expiryDate.split(" ");
             Calendar cal = Calendar.getInstance();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(issuedDate);
-            cal.setTime(date);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+            Date parsedIssuedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(issuedDate);
+            cal.setTime(parsedIssuedDate);
+
 
             for (int index = 0; index < splitExpiry.length; index++) {
                 if (splitExpiry[index].endsWith("d") || splitExpiry[index].endsWith("D")) {

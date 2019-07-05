@@ -6,6 +6,7 @@ import org.incredible.pojos.CompositeIdentityObject;
 import org.incredible.pojos.Signature;
 import org.incredible.pojos.ob.BadgeClass;
 import org.incredible.pojos.ob.Evidence;
+import org.incredible.pojos.ob.VerificationObject;
 
 
 public class CertificateExtensionBuilder implements IBuilder<CertificateExtension> {
@@ -76,14 +77,21 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
         return this;
     }
 
+
+    public CertificateExtensionBuilder setVerification(VerificationObject verificationObject) {
+        certificateExtension.setVerification(verificationObject);
+        return this;
+    }
+
+
     @Override
     public CertificateExtension build() {
         return certificateExtension;
     }
 
-    @Override
-    public String toString() {
-        return certificateExtension.toString();
-
-    }
+//    @Override
+//    public String toString() {
+//        return certificateExtension.toString();
+//
+//    }
 }
