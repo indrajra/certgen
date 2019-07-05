@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -127,8 +127,9 @@ public class Main {
         for (int row = 0; row < certModelsList.size(); row++) {
             // TODO - Generating certificate for <recipient> and index
             CertificateExtension certificate = certificateFactory.createCertificate(certModelsList.get(row), context);
-            generateQRCodeForCertificate(certificate);
-            generateHtmlTemplateForCertificate(certificate);
+            String uuid = UUID.randomUUID().toString();
+            generateQRCodeForCertificate(certificate, uuid);
+            generateHtmlTemplateForCertificate(certificate, uuid);
         }
 
 
@@ -162,7 +163,7 @@ public class Main {
     /**
      * to generateQRCode for certificate
      **/
-    private static void generateQRCodeForCertificate(CertificateExtension certificateExtension) {
+    private static void generateQRCodeForCertificate(CertificateExtension certificateExtension, String uuid) {
 
         List<String> text = new ArrayList<>();
         List<String> data = new ArrayList<>();
@@ -170,13 +171,12 @@ public class Main {
 
         text.add(certificateExtension.getRecipient().getName());
         data.add(certificateExtension.getBadge().getName());
-        filename.add(certificateExtension.getId());
+        filename.add(uuid);
 
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();
         qrCodeGenerationModel.setText(text);
         qrCodeGenerationModel.setFileName(filename);
         qrCodeGenerationModel.setData(data);
-
         QRCodeImageGenerator qrCodeImageGenerator = new QRCodeImageGenerator();
 
         try {
@@ -191,10 +191,10 @@ public class Main {
     /**
      * generate Html Template for certificate
      **/
-    private static void generateHtmlTemplateForCertificate(Assertion assertion) {
+    private static void generateHtmlTemplateForCertificate(Assertion assertion , String uuid) {
         File htmlTemplateFile = new File(getPath(HTML_TEMPLATE_NAME));
         String htmlString = null;
-        File file = new File(assertion.getId() + ".png");
+        File file = new File(uuid + ".png");
         String path = file.getPath();
 
         try {
@@ -206,7 +206,7 @@ public class Main {
         htmlString = htmlString.replace("$recipient", assertion.getRecipient().getName());
         htmlString = htmlString.replace("$img", path);
         htmlString = htmlString.replace("$course", assertion.getBadge().getName());
-        File newHtmlFile = new File(assertion.getId() + ".html");
+        File newHtmlFile = new File(uuid+ ".html");
         try {
             FileUtils.writeStringToFile(newHtmlFile, htmlString);
         } catch (IOException e) {
