@@ -57,7 +57,7 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
         return this;
     }
 
-    public CertificateExtensionBuilder setRecipent(CompositeIdentityObject objectBuilder) {
+    public CertificateExtensionBuilder setRecipient(CompositeIdentityObject objectBuilder) {
         certificateExtension.setRecipient(objectBuilder);
         return this;
     }
@@ -89,9 +89,4 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
         return certificateExtension;
     }
 
-//    @Override
-//    public String toString() {
-//        return certificateExtension.toString();
-//
-//    }
 }

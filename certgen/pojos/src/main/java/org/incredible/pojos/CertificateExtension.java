@@ -1,11 +1,6 @@
 package org.incredible.pojos;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.incredible.pojos.ob.Assertion;
-
-import java.util.*;
 
 
 /**
@@ -41,7 +36,6 @@ public class CertificateExtension extends Assertion {
      */
     private Signature signature;
 
-    private static ObjectMapper mapper = new ObjectMapper();
 
 
     public CertificateExtension(String ctx) {
@@ -89,34 +83,5 @@ public class CertificateExtension extends Assertion {
     public void setSignature(Signature signature) {
         this.signature = signature;
     }
-    
-//
-//    @Override
-//    public String toString() {
-//
-//        Map<String, Object> map = mapper.convertValue(this, new TypeReference<Map<String, Object>>() {
-//        });
-//        for (Map.Entry<String, Object> entry : map.entrySet()) {
-//            if (entry.getValue() != null) {
-//                if (!(entry.getValue() instanceof String) && !(entry.getValue() instanceof Boolean)) {
-//                if (entry.getKey() != "id" && entry.getKey() != "type") {
-//                    Map<String, Object> ChildObject = mapper.convertValue(entry.getValue(), new TypeReference<Map<String, Object>>() {
-//                    });
-//                    ChildObject.remove("@context");
-//                    map.remove(entry.getValue());
-//                    map.put(entry.getKey(), ChildObject);
-//                }
-//            }
-//
-//            }
-//        }
-//
-//        try {
-//            return mapper.writeValueAsString(map);
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//
-//    }
+
 }

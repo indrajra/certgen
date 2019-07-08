@@ -1,16 +1,16 @@
 package org.incredible.certProcessor;
 
 import org.incredible.builders.*;
-import org.incredible.pojos.Assessment;
 import org.incredible.pojos.CertificateExtension;
 import org.incredible.pojos.RankAssessment;
 import org.incredible.pojos.ob.Criteria;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Instant;
+import java.util.Properties;
 import java.util.UUID;
 
-import org.incredible.pojos.ob.Evidence;
 import org.incredible.pojos.ob.VerificationObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,19 +22,24 @@ public class CertificateFactory {
 
     private static Logger logger = LoggerFactory.getLogger(CertificateFactory.class);
 
+    final String resourceName = "application.properties";
 
-    /**
-     * The domain that holds the contexts for public consumption
-     */
 
     public CertificateExtension createCertificate(CertModel certModel, String context) {
 
-        uuid = "http://localhost:8080/_schemas/Certificate.json";
+        /**
+         * to read application.properties
+         */
+
+        Properties properties = readPropertiesFile();
+
+
+        uuid = properties.get("DOMAIN") + UUID.randomUUID().toString();
 
         CertificateExtensionBuilder certificateExtensionBuilder = new CertificateExtensionBuilder(context);
         CompositeIdentityObjectBuilder compositeIdentityObjectBuilder = new CompositeIdentityObjectBuilder(context);
         BadgeClassBuilder badgeClassBuilder = new BadgeClassBuilder(context);
-        AssessedEvidenceBuilder assessedEvidenceBuilder = new AssessedEvidenceBuilder("http://localhost:8080/_schemas/Extensions/AssessedEvidence/Context.json");
+        AssessedEvidenceBuilder assessedEvidenceBuilder = new AssessedEvidenceBuilder(properties.getProperty("AssessedDomain"));
 
 
         Criteria criteria = new Criteria();
@@ -62,15 +67,15 @@ public class CertificateFactory {
          * **/
 
         badgeClassBuilder.setName(certModel.getCourseName()).setDescription(certModel.getCertificateDescription())
-                .setId("http://localhost:8080/_schemas/Badge.json").setCriteria(criteria)
+                .setId(properties.getProperty("BadgeUrl")).setCriteria(criteria)
                 .setImage(certModel.getCertificateLogo()).
-                setIssuer("http://localhost:8080/_schemas/Issuer.json");
+                setIssuer(properties.getProperty("IssuerUrl"));
 
 
         /**
          *  assessed evidence object
          **/
-        AssessmentBuilder assessmentBuilder = new AssessmentBuilder();
+        AssessmentBuilder assessmentBuilder = new AssessmentBuilder(context);
         assessmentBuilder.setValue(21);
 
         assessedEvidenceBuilder.setAssessedBy("https://dgt.example.gov.in/iti-assessor.json").setId(uuid)
@@ -79,7 +84,7 @@ public class CertificateFactory {
         /**
          * Certificate extension object
          */
-        certificateExtensionBuilder.setId(uuid).setRecipent(compositeIdentityObjectBuilder.build())
+        certificateExtensionBuilder.setId(uuid).setRecipient(compositeIdentityObjectBuilder.build())
                 .setBadge(badgeClassBuilder.build()).setEvidence(assessedEvidenceBuilder.build())
                 .setIssuedOn(certModel.getIssuedDate()).setExpires(certModel.getExpiry())
                 .setValidFrom(certModel.getValidFrom()).setVerification(verificationObject);
@@ -88,8 +93,23 @@ public class CertificateFactory {
 
         return certificateExtensionBuilder.build();
     }
+
     /**
      * Loads the JSON-LD context
+     *
      * @throws IOException
      */
+
+    public Properties readPropertiesFile() {
+        ClassLoader loader = CertificateFactory.class.getClassLoader();
+        Properties properties = new Properties();
+        try (InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
+            properties.load(resourceStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.info("Exception while reading application.properties {}", e);
+        }
+        return properties;
+    }
+
 }

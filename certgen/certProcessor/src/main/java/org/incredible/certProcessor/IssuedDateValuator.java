@@ -21,7 +21,7 @@ public class IssuedDateValuator implements IEvaluator {
     public String evaluates(Object inputVal) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Calendar cal = Calendar.getInstance();
-        Date date = null;
+        Date date;
         date = convertToDate((String) inputVal);
         cal.setTime(date);
         return simpleDateFormat.format(cal.getTime());
