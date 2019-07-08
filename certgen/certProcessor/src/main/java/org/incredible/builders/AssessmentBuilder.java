@@ -1,11 +1,20 @@
 package org.incredible.builders;
 
+import org.incredible.pojos.AssessedEvidence;
 import org.incredible.pojos.Assessment;
 
 public class AssessmentBuilder implements IBuilder<Assessment> {
 
+
+    /**
+     * TODO add context for assessment
+     */
+
     Assessment assessment;
 
+    public AssessmentBuilder(String context) {
+        assessment = new Assessment(context);
+    }
 
     public AssessmentBuilder setType(String[] type) {
         assessment.setType(type);
@@ -17,6 +26,7 @@ public class AssessmentBuilder implements IBuilder<Assessment> {
         assessment.setValue(value);
         return this;
     }
+
     @Override
     public Assessment build() {
         return this.assessment;

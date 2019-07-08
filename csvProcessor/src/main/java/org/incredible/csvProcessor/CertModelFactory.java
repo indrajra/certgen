@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import org.incredible.certProcessor.CertModel;
 
+
 public class CertModelFactory {
     private HashMap<String, String> csvProperties;
     private static Logger logger = LoggerFactory.getLogger(CertModelFactory.class);
@@ -46,13 +47,14 @@ public class CertModelFactory {
                 break;
             }
         }
-
         if (parameterTypes.length == 0) {
             return null;
 
         } else
             return parameterTypes[0];
     }
+
+
 }
 
 

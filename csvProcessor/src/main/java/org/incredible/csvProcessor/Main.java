@@ -11,6 +11,7 @@ import org.incredible.certProcessor.CertModel;
 import org.incredible.certProcessor.CertificateFactory;
 import org.incredible.pojos.CertificateExtension;
 import org.incredible.pojos.ob.Assertion;
+import org.incredible.HTMLTemplateGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,11 +19,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 
 public class Main {
 
@@ -71,9 +70,8 @@ public class Main {
     private static HashMap<String, String> csvProperties;
 
 
-    private static final String DOMAIN = "http://localhost:8080";
+    private static final String DOMAIN = "http://localhost:8080/_schemas";
     private static final String CONTEXT_FILE_NAME = "context.json";
-    private static final String HTML_TEMPLATE_NAME = "template.html";
 
     private static String context;
 
@@ -125,7 +123,6 @@ public class Main {
         /** iterate each inputmodel to generate certificate **/
 
         for (int row = 0; row < certModelsList.size(); row++) {
-            // TODO - Generating certificate for <recipient> and index
             CertificateExtension certificate = certificateFactory.createCertificate(certModelsList.get(row), context);
             generateQRCodeForCertificate(certificate);
             generateHtmlTemplateForCertificate(certificate);
@@ -170,13 +167,14 @@ public class Main {
 
         text.add(certificateExtension.getRecipient().getName());
         data.add(certificateExtension.getBadge().getName());
-        filename.add(certificateExtension.getId());
+        filename.add(certificateExtension.getId().split("Certificate/")[1]);
+
+        System.out.println();
 
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();
         qrCodeGenerationModel.setText(text);
         qrCodeGenerationModel.setFileName(filename);
         qrCodeGenerationModel.setData(data);
-
         QRCodeImageGenerator qrCodeImageGenerator = new QRCodeImageGenerator();
 
         try {
@@ -192,26 +190,9 @@ public class Main {
      * generate Html Template for certificate
      **/
     private static void generateHtmlTemplateForCertificate(Assertion assertion) {
-        File htmlTemplateFile = new File(getPath(HTML_TEMPLATE_NAME));
-        String htmlString = null;
-        File file = new File(assertion.getId() + ".png");
-        String path = file.getPath();
 
-        try {
-            htmlString = FileUtils.readFileToString(htmlTemplateFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        htmlString = htmlString.replace("$title", "certificate");
-        htmlString = htmlString.replace("$recipient", assertion.getRecipient().getName());
-        htmlString = htmlString.replace("$img", path);
-        htmlString = htmlString.replace("$course", assertion.getBadge().getName());
-        File newHtmlFile = new File(assertion.getId() + ".html");
-        try {
-            FileUtils.writeStringToFile(newHtmlFile, htmlString);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        HTMLTemplateGenerator htmlTemplateGenerator = new HTMLTemplateGenerator();
+        htmlTemplateGenerator.generateTemplate(assertion);
 
     }
 

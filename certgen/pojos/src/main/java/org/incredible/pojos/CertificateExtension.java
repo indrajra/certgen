@@ -2,6 +2,7 @@ package org.incredible.pojos;
 
 import org.incredible.pojos.ob.Assertion;
 
+
 /**
  * An extension to Assertion class
  */
@@ -34,6 +35,8 @@ public class CertificateExtension extends Assertion {
      * The signature value (hash typically generated using private key)
      */
     private Signature signature;
+
+
 
     public CertificateExtension(String ctx) {
         String[] type = new String[]{"Assertion", "Extension", "extensions:CertificateExtension"};
@@ -80,4 +83,5 @@ public class CertificateExtension extends Assertion {
     public void setSignature(Signature signature) {
         this.signature = signature;
     }
+
 }

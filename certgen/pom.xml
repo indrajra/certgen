@@ -23,6 +23,7 @@
         <module>pojos</module>
         <module>certProcessor</module>
         <module>qrcode-image-generator</module>
+        <module>html-template-generator</module>
     </modules>
 
     <build>

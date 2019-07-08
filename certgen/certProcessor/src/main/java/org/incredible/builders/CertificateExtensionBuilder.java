@@ -1,11 +1,12 @@
 package org.incredible.builders;
 
-import org.incredible.pojos.AssessedEvidence;
+
 import org.incredible.pojos.CertificateExtension;
 import org.incredible.pojos.CompositeIdentityObject;
 import org.incredible.pojos.Signature;
 import org.incredible.pojos.ob.BadgeClass;
 import org.incredible.pojos.ob.Evidence;
+import org.incredible.pojos.ob.VerificationObject;
 
 
 public class CertificateExtensionBuilder implements IBuilder<CertificateExtension> {
@@ -40,8 +41,8 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
     }
 
     public CertificateExtensionBuilder setIssuedOn(String issuedOn) {
-            certificateExtension.setIssuedOn(issuedOn);
-            return this;
+        certificateExtension.setIssuedOn(issuedOn);
+        return this;
 
     }
 
@@ -56,17 +57,17 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
         return this;
     }
 
-    public CertificateExtensionBuilder setRecipent(CompositeIdentityObject objectBuilder) {
+    public CertificateExtensionBuilder setRecipient(CompositeIdentityObject objectBuilder) {
         certificateExtension.setRecipient(objectBuilder);
         return this;
     }
 
-    public  CertificateExtensionBuilder setBadge(BadgeClass badge) {
-       certificateExtension.setBadge(badge);
-       return this;
+    public CertificateExtensionBuilder setBadge(BadgeClass badge) {
+        certificateExtension.setBadge(badge);
+        return this;
     }
 
-    public  CertificateExtensionBuilder setEvidence(Evidence evidence) {
+    public CertificateExtensionBuilder setEvidence(Evidence evidence) {
         certificateExtension.setEvidence(evidence);
         return this;
     }
@@ -77,8 +78,15 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
     }
 
 
+    public CertificateExtensionBuilder setVerification(VerificationObject verificationObject) {
+        certificateExtension.setVerification(verificationObject);
+        return this;
+    }
+
+
     @Override
     public CertificateExtension build() {
-        return this.certificateExtension;
+        return certificateExtension;
     }
+
 }

@@ -1,11 +1,11 @@
 package org.incredible.builders;
 
 import org.incredible.pojos.AssessedEvidence;
+import org.incredible.pojos.Assessment;
 import org.incredible.pojos.Signature;
 
 
 public class AssessedEvidenceBuilder implements IBuilder<AssessedEvidence> {
-
 
 
     private AssessedEvidence assessedEvidence;
@@ -31,10 +31,21 @@ public class AssessedEvidenceBuilder implements IBuilder<AssessedEvidence> {
         return this;
     }
 
+    public AssessedEvidenceBuilder setId(String id) {
+        assessedEvidence.setId(id);
+        return this;
+    }
+
+    public AssessedEvidenceBuilder setAssessment(Assessment assessment) {
+        assessedEvidence.setAssessment(assessment);
+        return this;
+    }
+
     private AssessedEvidenceBuilder setSignature(Signature signature) {
         assessedEvidence.setSignature(signature);
         return this;
     }
+
 
     @Override
     public AssessedEvidence build() {
