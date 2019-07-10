@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "CompositeIdentityObject",
+  "title": "Duration",
   "description": "This extension provides a reference to certificate",
   "type": "object",
   "definitions": {
@@ -11,31 +11,10 @@
     }
   },
   "properties": {
-    "type": {
-      "type": "array"
-    },
-    "components": {
-      "type": "object"
-    },
-    "name": {
+    "startDate": {
       "type": "string"
     },
-    "photo": {
-      "type": "string"
-    },
-    "dob": {
-      "type": "string"
-    },
-    "gender": {
-      "type": "string"
-    },
-    "tag": {
-      "type": "string"
-    },
-    "urn": {
-      "type": "string"
-    },
-    "url": {
+    "endDate": {
       "type": "string"
     }
   }
