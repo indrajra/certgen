@@ -27,7 +27,11 @@
       "type": "string"
     },
     "gender": {
-      "type": "string"
+      "enum": [
+        "OTHER",
+        "MALE",
+        "FEMALE"
+      ]
     },
     "tag": {
       "type": "string"

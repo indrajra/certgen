@@ -1,4 +1,4 @@
-package org.incredible.certProcessor;
+package org.incredible.pojos.ob.valuator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,8 +23,14 @@ public class IssuedDateValuator implements IEvaluator {
         Calendar cal = Calendar.getInstance();
         Date date;
         date = convertToDate((String) inputVal);
-        cal.setTime(date);
-        return simpleDateFormat.format(cal.getTime());
+
+        if (date == null) {
+            return null;
+        } else {
+            cal.setTime(date);
+            return simpleDateFormat.format(cal.getTime());
+        }
+
     }
 
 
@@ -38,7 +44,6 @@ public class IssuedDateValuator implements IEvaluator {
                 format.setLenient(false);
                 date = format.parse(input);
             } catch (ParseException e) {
-
             }
             if (date != null) {
                 break;

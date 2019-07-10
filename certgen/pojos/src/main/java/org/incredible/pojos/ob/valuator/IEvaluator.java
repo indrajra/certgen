@@ -1,4 +1,4 @@
-package org.incredible.certProcessor;
+package org.incredible.pojos.ob.valuator;
 
 public interface IEvaluator {
 
