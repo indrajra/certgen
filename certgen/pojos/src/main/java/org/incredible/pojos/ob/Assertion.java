@@ -1,13 +1,10 @@
 package org.incredible.pojos.ob;
 
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.incredible.pojos.CompositeIdentityObject;
 import org.incredible.pojos.ob.valuator.ExpiryDateValuator;
 import org.incredible.pojos.ob.valuator.IssuedDateValuator;
 
-import java.text.MessageFormat;
-import java.text.ParseException;
 
 
 /**
@@ -94,7 +91,7 @@ public class Assertion extends OBBase {
         IssuedDateValuator issuedDateValuator = new IssuedDateValuator();
         try {
             if (issuedDateValuator.evaluates(issuedOn) == null) {
-                throw new IllegalArgumentException("Issued date is not in given format");
+                throw new IllegalArgumentException("Issued date is not in a given format");
             } else
                 this.issuedOn = issuedDateValuator.evaluates(issuedOn);
         } catch (IllegalArgumentException e) {
@@ -140,15 +137,12 @@ public class Assertion extends OBBase {
 
     public void setExpires(String expires) {
         try {
-            if(this.getIssuedOn() == null) {
-                throw new Exception("Issued date is not in format");
-            } else {
-                ExpiryDateValuator valuator = new ExpiryDateValuator(this.getIssuedOn());
-                if (valuator.evaluates(expires) == null) {
-                    throw new IllegalArgumentException("Expiry date is in wrong format");
-                } else
-                    this.expires = valuator.evaluates(expires);
-            }
+            ExpiryDateValuator valuator = new ExpiryDateValuator(this.getIssuedOn());
+            if (valuator.evaluates(expires) == null) {
+                throw new IllegalArgumentException("Expiry date is in wrong format");
+            } else
+                this.expires = valuator.evaluates(expires);
+
         } catch (Exception e) {
         }
 
