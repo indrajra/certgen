@@ -7,10 +7,7 @@ import org.incredible.pojos.ob.Assertion;
 
 public class AssertionObjectBuilder implements IBuilder<Assertion> {
 
-    public  String context;
     public Assertion assertion;
-
-
 
 
     private static ObjectMapper mapper = new ObjectMapper();
