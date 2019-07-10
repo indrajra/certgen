@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
-
 public class CertModel {
 
     private String CourseName;
@@ -93,7 +92,6 @@ public class CertModel {
     }
 
     public CertModel setIssuer(String issuer) {
-
         Issuer = issuer;
         return this;
     }
@@ -111,9 +109,7 @@ public class CertModel {
     }
 
     public void setIssuedDate(String issuedDate) {
-
-        IssuedDateValuator issuedDateValuator = new IssuedDateValuator();
-        IssuedDate = issuedDateValuator.evaluates(issuedDate);
+        IssuedDate = issuedDate;
 
     }
 
@@ -131,8 +127,7 @@ public class CertModel {
     }
 
     public void setExpiry(String expiry) {
-        ExpiryDateValuator valuator = new ExpiryDateValuator(this.getIssuedDate());
-        Expiry = valuator.evaluates(expiry);
+        Expiry = expiry;
     }
 
     @Override

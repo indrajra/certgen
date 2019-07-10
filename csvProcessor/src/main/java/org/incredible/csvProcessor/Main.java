@@ -7,17 +7,19 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.ekstep.QRCodeGenerationModel;
 import org.ekstep.util.QRCodeImageGenerator;
+
+import org.incredible.HTMLGenerator;
+import org.incredible.HTMLTemplateFile;
 import org.incredible.certProcessor.CertModel;
 import org.incredible.certProcessor.CertificateFactory;
 import org.incredible.pojos.CertificateExtension;
 import org.incredible.pojos.ob.Assertion;
-import org.incredible.HTMLTemplateGenerator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.List;
@@ -36,7 +38,7 @@ public class Main {
 
     private static Logger logger = LoggerFactory.getLogger(Main.class);
 
-    static List<File> QrcodeList;
+    private static List<File> QrcodeList;
 
     /**
      * to get the file name
@@ -50,6 +52,8 @@ public class Main {
      **/
 
     static String modelFileName = "CertModelMapper.json";
+
+    private static final String HTML_TEMPLATE_NAME = "template.html";
 
 
     static CertificateFactory certificateFactory = new CertificateFactory();
@@ -168,9 +172,6 @@ public class Main {
         text.add(certificateExtension.getRecipient().getName());
         data.add(certificateExtension.getBadge().getName());
         filename.add(certificateExtension.getId().split("Certificate/")[1]);
-
-        System.out.println();
-
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();
         qrCodeGenerationModel.setText(text);
         qrCodeGenerationModel.setFileName(filename);
@@ -181,7 +182,7 @@ public class Main {
             QrcodeList = qrCodeImageGenerator.createQRImages(qrCodeGenerationModel, "container", "path");
 
         } catch (IOException | WriterException | FontFormatException | NotFoundException e) {
-            logger.info("Exception while generating QRcode {}", e);
+            logger.info("Exception while generating QRcode {}", e.getMessage());
         }
 
     }
@@ -190,10 +191,9 @@ public class Main {
      * generate Html Template for certificate
      **/
     private static void generateHtmlTemplateForCertificate(Assertion assertion) {
-
-        HTMLTemplateGenerator htmlTemplateGenerator = new HTMLTemplateGenerator();
-        htmlTemplateGenerator.generateTemplate(assertion);
-
+        HTMLGenerator htmlTemplateGenerator = new HTMLGenerator();
+        HTMLTemplateFile htmlTemplateFile = new HTMLTemplateFile(HTML_TEMPLATE_NAME);
+        htmlTemplateGenerator.generateTemplate(assertion, htmlTemplateFile.getTemplateContent());
     }
 
     private static void initContext() {
@@ -202,7 +202,7 @@ public class Main {
 
             File file = new File(classLoader.getResource(CONTEXT_FILE_NAME).getFile());
             if (file == null) {
-                throw new IOException("Context file not found");
+                throw new IOException("Context file not found ");
             }
             context = DOMAIN + "/" + CONTEXT_FILE_NAME;
             logger.info("Context file Found : {} ", file.exists());

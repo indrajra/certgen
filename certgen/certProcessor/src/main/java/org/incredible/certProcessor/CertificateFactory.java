@@ -79,7 +79,7 @@ public class CertificateFactory {
         assessmentBuilder.setValue(21);
 
         assessedEvidenceBuilder.setAssessedBy("https://dgt.example.gov.in/iti-assessor.json").setId(uuid)
-                .setAssessedOn(Instant.now().toString()).setSubject("maths").setAssessment(assessmentBuilder.build());
+                .setAssessedOn(Instant.now().toString()).setAssessment(assessmentBuilder.build());
 
         /**
          * Certificate extension object
@@ -107,7 +107,7 @@ public class CertificateFactory {
             properties.load(resourceStream);
         } catch (IOException e) {
             e.printStackTrace();
-            logger.info("Exception while reading application.properties {}", e);
+            logger.info("Exception while reading application.properties {}", e.getMessage());
         }
         return properties;
     }
