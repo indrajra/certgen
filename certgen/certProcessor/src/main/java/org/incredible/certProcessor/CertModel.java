@@ -3,132 +3,145 @@ package org.incredible.certProcessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.security.KeyPair;
+
 
 public class CertModel {
 
-    private String CourseName;
-    private String RecipientName;
-    private String RecipientEmail;
-    private String RecipientPhone;
-    private String CertificateName;
-    private String CertificateDescription;
-    private String CertificateLogo;
-    private String IssuedDate;
-    private String Issuer;
-    private String ValidFrom;
-    private String Expiry;
-    private String SignatoryList;
+    private String courseName;
+    private String recipientName;
+    private String recipientEmail;
+    private String recipientPhone;
+    private String certificateName;
+    private String certificateDescription;
+    private String certificateLogo;
+    private String issuedDate;
+    private String issuer;
+    private String validFrom;
+    private String expiry;
+    private KeyPair signatoryList;
+    private String assessedOn;
+
     private static ObjectMapper mapper = new ObjectMapper();
 
     public CertModel() {
     }
 
     public String getCourseName() {
-        return CourseName;
+        return courseName;
     }
 
     public CertModel setCourseName(String courseName) {
-        CourseName = courseName;
+        this.courseName = courseName;
         return this;
     }
 
     public String getRecipientName() {
-        return RecipientName;
+        return recipientName;
     }
 
     public CertModel setRecipientName(String recipientName) {
-        RecipientName = recipientName;
+        this.recipientName = recipientName;
         return this;
     }
 
     public String getRecipientEmail() {
-        return RecipientEmail;
+        return recipientEmail;
     }
 
     public CertModel setRecipientEmail(String recipientEmail) {
-        RecipientEmail = recipientEmail;
+        this.recipientEmail = recipientEmail;
         return this;
     }
 
     public String getRecipientPhone() {
-        return RecipientPhone;
+        return recipientPhone;
     }
 
     public CertModel setRecipientPhone(String recipientPhone) {
-        RecipientPhone = recipientPhone;
+        this.recipientPhone = recipientPhone;
         return this;
 
     }
 
     public String getCertificateName() {
-        return CertificateName;
+        return certificateName;
     }
 
     public CertModel setCertificateName(String certificateName) {
-        CertificateName = certificateName;
+        this.certificateName = certificateName;
         return this;
     }
 
     public String getCertificateDescription() {
-        return CertificateDescription;
+        return certificateDescription;
     }
 
     public CertModel setCertificateDescription(String certificateDescription) {
-        CertificateDescription = certificateDescription;
+        this.certificateDescription = certificateDescription;
         return this;
     }
 
     public String getCertificateLogo() {
-        return CertificateLogo;
+        return certificateLogo;
     }
 
     public CertModel setCertificateLogo(String certificateLogo) {
-        CertificateLogo = certificateLogo;
+        this.certificateLogo = certificateLogo;
         return this;
     }
 
     public String getIssuer() {
-        return Issuer;
+        return issuer;
     }
 
     public CertModel setIssuer(String issuer) {
-        Issuer = issuer;
+        this.issuer = issuer;
         return this;
     }
 
-    public String getSignatoryList() {
-        return SignatoryList;
+    public KeyPair getSignatoryList() {
+        return signatoryList;
     }
 
-    public void setSignatoryList(String signatoryList) {
-        SignatoryList = signatoryList;
+    public void setSignatoryList(KeyPair signatoryList) {
+        this.signatoryList = signatoryList;
     }
 
     public String getIssuedDate() {
-        return IssuedDate;
+        return issuedDate;
     }
 
     public void setIssuedDate(String issuedDate) {
-        IssuedDate = issuedDate;
+        this.issuedDate = issuedDate;
 
     }
 
     public String getValidFrom() {
-        return ValidFrom;
+        return validFrom;
     }
 
     public void setValidFrom(String validFrom) {
-        ValidFrom = validFrom;
+        this.validFrom = validFrom;
     }
 
 
     public String getExpiry() {
-        return Expiry;
+        return expiry;
     }
 
     public void setExpiry(String expiry) {
-        Expiry = expiry;
+        this.expiry = expiry;
     }
+
+    public String getAssessedOn() {
+        return assessedOn;
+    }
+
+    public void setAssessedOn(String assessedOn) {
+        this.assessedOn = assessedOn;
+    }
+
 
     @Override
     public String toString() {

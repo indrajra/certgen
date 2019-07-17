@@ -4,7 +4,7 @@ import org.incredible.pojos.Signature;
 
 public class SignatureBuilder implements IBuilder<Signature> {
 
-    Signature signature;
+    Signature signature =  new Signature();
 
 
     public SignatureBuilder setType(String type) {

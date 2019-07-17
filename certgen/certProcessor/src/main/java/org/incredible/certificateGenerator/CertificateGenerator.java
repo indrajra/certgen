@@ -9,6 +9,7 @@ import org.incredible.HTMLTemplateProvider;
 import org.incredible.certProcessor.CertModel;
 import org.incredible.certProcessor.CertificateFactory;
 import org.incredible.pojos.CertificateExtension;
+import org.incredible.pojos.ob.exeptions.InvalidDateFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,7 @@ public class CertificateGenerator {
     /**
      * to get all the properties from the application.properties
      */
-    Properties properties = certificateFactory.readPropertiesFile();
+    private Properties properties = certificateFactory.readPropertiesFile();
 
     /**
      * context file url
@@ -44,25 +45,25 @@ public class CertificateGenerator {
         this.context = context;
     }
 
-    public String createCertificate(CertModel certModel, HTMLTemplateProvider htmlTemplateProvider, String config) {
+    public String createCertificate(CertModel certModel, HTMLTemplateProvider htmlTemplateProvider, String config) throws InvalidDateFormatException {
 
         CertificateExtension certificateExtension = certificateFactory.createCertificate(certModel, context);
         generateQRCodeForCertificate(certificateExtension);
         isValid = htmlTemplateProvider.checkHtmlTemplateIsValid(htmlTemplateProvider.getTemplateContent());
         if (isValid) {
-            htmlGenerator.generateTemplate(certificateExtension, htmlTemplateProvider.getTemplateContent());
+            htmlGenerator.generateHTML(certificateExtension, htmlTemplateProvider.getTemplateContent());
             return certificateExtension.getId().split("Certificate/")[1];
         } else return null;
     }
 
 
-    private static void generateQRCodeForCertificate(CertificateExtension certificateExtension) {
+    private void generateQRCodeForCertificate(CertificateExtension certificateExtension) {
 
         List<String> text = new ArrayList<>();
         List<String> data = new ArrayList<>();
         List<String> filename = new ArrayList<>();
         List<File> QrcodeList;
-        text.add(certificateExtension.getRecipient().getName());
+        text.add(properties.getProperty("QRcodeName"));
         data.add(certificateExtension.getBadge().getName());
         filename.add(certificateExtension.getId().split("Certificate/")[1]);
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();

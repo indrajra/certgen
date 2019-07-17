@@ -23,6 +23,7 @@
         <module>certProcessor</module>
         <module>qrcode-image-generator</module>
         <module>html-generator</module>
+        <module>cloud-storage</module>
     </modules>
 
     <build>

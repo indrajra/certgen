@@ -29,7 +29,6 @@ public abstract class HTMLTemplateProvider {
             return false;
 
         }
-
     }
 }
 

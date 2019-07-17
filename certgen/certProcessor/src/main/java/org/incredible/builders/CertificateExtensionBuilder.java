@@ -7,6 +7,7 @@ import org.incredible.pojos.Signature;
 import org.incredible.pojos.ob.BadgeClass;
 import org.incredible.pojos.ob.Evidence;
 import org.incredible.pojos.ob.VerificationObject;
+import org.incredible.pojos.ob.exeptions.InvalidDateFormatException;
 
 
 public class CertificateExtensionBuilder implements IBuilder<CertificateExtension> {
@@ -40,7 +41,7 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
         return this;
     }
 
-    public CertificateExtensionBuilder setIssuedOn(String issuedOn) {
+    public CertificateExtensionBuilder setIssuedOn(String issuedOn) throws InvalidDateFormatException {
         certificateExtension.setIssuedOn(issuedOn);
         return this;
 
@@ -72,7 +73,7 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
         return this;
     }
 
-    public CertificateExtensionBuilder setExpires(String expires) {
+    public CertificateExtensionBuilder setExpires(String expires) throws InvalidDateFormatException {
         certificateExtension.setExpires(expires);
         return this;
     }

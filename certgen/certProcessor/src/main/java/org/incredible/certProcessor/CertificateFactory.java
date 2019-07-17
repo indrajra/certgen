@@ -7,11 +7,18 @@ import org.incredible.pojos.ob.Criteria;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
 import java.time.Instant;
 import java.util.Properties;
 import java.util.UUID;
 
 import org.incredible.pojos.ob.VerificationObject;
+import org.incredible.pojos.ob.exeptions.InvalidDateFormatException;
+import org.incredible.utils.SignatureHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,8 +31,9 @@ public class CertificateFactory {
 
     final String resourceName = "application.properties";
 
+    private static SignatureHelper signatureHelper;
 
-    public CertificateExtension createCertificate(CertModel certModel, String context) {
+    public CertificateExtension createCertificate(CertModel certModel, String context) throws InvalidDateFormatException {
 
         /**
          * to read application.properties
@@ -34,12 +42,13 @@ public class CertificateFactory {
         Properties properties = readPropertiesFile();
 
 
-        uuid = properties.get("DOMAIN") + UUID.randomUUID().toString();
+        uuid = properties.getProperty("DOMAIN") + UUID.randomUUID().toString();
 
         CertificateExtensionBuilder certificateExtensionBuilder = new CertificateExtensionBuilder(context);
         CompositeIdentityObjectBuilder compositeIdentityObjectBuilder = new CompositeIdentityObjectBuilder(context);
         BadgeClassBuilder badgeClassBuilder = new BadgeClassBuilder(context);
         AssessedEvidenceBuilder assessedEvidenceBuilder = new AssessedEvidenceBuilder(properties.getProperty("AssessedDomain"));
+        SignatureBuilder signatureBuilder = new SignatureBuilder();
 
 
         Criteria criteria = new Criteria();
@@ -51,7 +60,7 @@ public class CertificateFactory {
         rankAssessment.setMaxValue(1);
 
 
-        String[] type = new String[]{"hosted"};
+        String[] type = new String[]{"SignedBadge"};
         VerificationObject verificationObject = new VerificationObject();
         verificationObject.setType(type);
 
@@ -79,9 +88,10 @@ public class CertificateFactory {
         assessmentBuilder.setValue(21);
 
         assessedEvidenceBuilder.setAssessedBy("https://dgt.example.gov.in/iti-assessor.json").setId(uuid)
-                .setAssessedOn(Instant.now().toString()).setAssessment(assessmentBuilder.build());
+                .setAssessedOn(certModel.getAssessedOn()).setAssessment(assessmentBuilder.build());
 
         /**
+         *
          * Certificate extension object
          */
         certificateExtensionBuilder.setId(uuid).setRecipient(compositeIdentityObjectBuilder.build())
@@ -89,16 +99,28 @@ public class CertificateFactory {
                 .setIssuedOn(certModel.getIssuedDate()).setExpires(certModel.getExpiry())
                 .setValidFrom(certModel.getValidFrom()).setVerification(verificationObject);
 
+
+        /**
+         * to assign signature value
+         */
+        initSignatureHelper(certModel.getSignatoryList());
+        /** certificate before signature value **/
+        String toSignCertificate = certificateExtensionBuilder.build().toString();
+
+        String signatureValue = getSignatureValue(toSignCertificate);
+
+        signatureBuilder.setCreated(Instant.now().toString()).setCreator("https://dgt.example.gov.in/keys/awarding_body.json")
+                .setSignatureValue(signatureValue);
+        certificateExtensionBuilder.setSignature(signatureBuilder.build());
+
+        logger.info("signed certificate is valid {}", verifySignature(toSignCertificate, signatureValue));
+
         logger.info("certificate extension => {}", certificateExtensionBuilder.build());
+
 
         return certificateExtensionBuilder.build();
     }
 
-    /**
-     * Loads the JSON-LD context
-     *
-     * @throws IOException
-     */
 
     public Properties readPropertiesFile() {
         ClassLoader loader = CertificateFactory.class.getClassLoader();
@@ -112,4 +134,38 @@ public class CertificateFactory {
         return properties;
     }
 
+    public static boolean verifySignature(String certificate, String signatureValue) {
+        boolean isValid = false;
+        try {
+            isValid = signatureHelper.verify(certificate.getBytes(),
+                    signatureValue);
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        }
+        return isValid;
+    }
+
+    private static void initSignatureHelper(KeyPair keyPair) {
+
+        try {
+            signatureHelper = new SignatureHelper("SHA1withRSA", keyPair);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private static String getSignatureValue(String toSignCertificate) {
+        try {
+            String signatureValue = signatureHelper.sign(toSignCertificate.getBytes());
+            return signatureValue;
+        } catch (SignatureException | UnsupportedEncodingException | InvalidKeyException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }
+
