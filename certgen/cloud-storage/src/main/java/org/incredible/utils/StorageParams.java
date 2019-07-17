@@ -12,6 +12,10 @@ import java.util.Properties;
 
 public class StorageParams {
 
+    //todo remove dependency on env file or properties
+
+
+
     private static BaseStorageService storageService = null;
 
     final static String resourceName = "application.properties";

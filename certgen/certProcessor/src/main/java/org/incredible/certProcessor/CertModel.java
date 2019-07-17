@@ -8,8 +8,17 @@ import java.security.KeyPair;
 
 public class CertModel {
 
+    /**
+     * Mandatory, The course name for which the certificate is generated
+     */
     private String courseName;
+
+    /**
+     * Mandatory, Name of the person receiving the certificate
+     */
     private String recipientName;
+
+
     private String recipientEmail;
     private String recipientPhone;
     private String certificateName;
@@ -19,7 +28,9 @@ public class CertModel {
     private String issuer;
     private String validFrom;
     private String expiry;
-    private KeyPair signatoryList;
+
+    // todo array of issuer object
+    private String signatoryList;
     private String assessedOn;
 
     private static ObjectMapper mapper = new ObjectMapper();
@@ -100,11 +111,11 @@ public class CertModel {
         return this;
     }
 
-    public KeyPair getSignatoryList() {
+    public String getSignatoryList() {
         return signatoryList;
     }
 
-    public void setSignatoryList(KeyPair signatoryList) {
+    public void setSignatoryList(String signatoryList) {
         this.signatoryList = signatoryList;
     }
 

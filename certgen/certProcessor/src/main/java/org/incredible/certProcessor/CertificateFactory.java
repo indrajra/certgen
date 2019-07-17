@@ -41,7 +41,7 @@ public class CertificateFactory {
 
         Properties properties = readPropertiesFile();
 
-
+        //todo take property file as input
         uuid = properties.getProperty("DOMAIN") + UUID.randomUUID().toString();
 
         CertificateExtensionBuilder certificateExtensionBuilder = new CertificateExtensionBuilder(context);
@@ -60,7 +60,9 @@ public class CertificateFactory {
         rankAssessment.setMaxValue(1);
 
 
-        String[] type = new String[]{"SignedBadge"};
+        //todo decide hosted or signed badge based on config
+
+        String[] type = new String[]{"hosted"};
         VerificationObject verificationObject = new VerificationObject();
         verificationObject.setType(type);
 
@@ -100,20 +102,20 @@ public class CertificateFactory {
                 .setValidFrom(certModel.getValidFrom()).setVerification(verificationObject);
 
 
-        /**
-         * to assign signature value
-         */
-        initSignatureHelper(certModel.getSignatoryList());
-        /** certificate before signature value **/
-        String toSignCertificate = certificateExtensionBuilder.build().toString();
-
-        String signatureValue = getSignatureValue(toSignCertificate);
-
-        signatureBuilder.setCreated(Instant.now().toString()).setCreator("https://dgt.example.gov.in/keys/awarding_body.json")
-                .setSignatureValue(signatureValue);
-        certificateExtensionBuilder.setSignature(signatureBuilder.build());
-
-        logger.info("signed certificate is valid {}", verifySignature(toSignCertificate, signatureValue));
+//        /**
+//         * to assign signature value
+//         */
+//        initSignatureHelper(certModel.getSignatoryList());
+//        /** certificate before signature value **/
+//        String toSignCertificate = certificateExtensionBuilder.build().toString();
+//
+//        String signatureValue = getSignatureValue(toSignCertificate);
+//
+//        signatureBuilder.setCreated(Instant.now().toString()).setCreator("https://dgt.example.gov.in/keys/awarding_body.json")
+//                .setSignatureValue(signatureValue);
+//        certificateExtensionBuilder.setSignature(signatureBuilder.build());
+//
+//        logger.info("signed certificate is valid {}", verifySignature(toSignCertificate, signatureValue));
 
         logger.info("certificate extension => {}", certificateExtensionBuilder.build());
 

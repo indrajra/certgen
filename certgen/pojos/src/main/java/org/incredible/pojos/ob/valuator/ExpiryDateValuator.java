@@ -68,7 +68,7 @@ public class ExpiryDateValuator implements IEvaluator {
             }
         }
     }
-
+//todo write test cases
     private int getDigits(String string) {
         Pattern pattern = Pattern.compile("^\\d+");
         Matcher matcher = pattern.matcher(string);

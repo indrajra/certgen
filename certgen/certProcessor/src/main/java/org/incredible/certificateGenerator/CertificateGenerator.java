@@ -25,11 +25,6 @@ public class CertificateGenerator {
     private CertificateFactory certificateFactory = new CertificateFactory();
 
     /**
-     * to get all the properties from the application.properties
-     */
-    private Properties properties = certificateFactory.readPropertiesFile();
-
-    /**
      * context file url
      **/
     private final String context;
@@ -63,7 +58,8 @@ public class CertificateGenerator {
         List<String> data = new ArrayList<>();
         List<String> filename = new ArrayList<>();
         List<File> QrcodeList;
-        text.add(properties.getProperty("QRcodeName"));
+        //todo generate n digit code
+        text.add("123456");
         data.add(certificateExtension.getBadge().getName());
         filename.add(certificateExtension.getId().split("Certificate/")[1]);
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();

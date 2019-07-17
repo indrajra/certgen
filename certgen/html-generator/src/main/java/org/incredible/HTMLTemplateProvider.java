@@ -10,6 +10,8 @@ public abstract class HTMLTemplateProvider {
     private static Logger logger = LoggerFactory.getLogger(HTMLTemplateProvider.class);
 
 
+
+    //todo html template and model tight coupling must be there
     public Boolean checkHtmlTemplateIsValid(String htmlString) {
         HTMLTemplateVariables htmlMacros[] = HTMLTemplateVariables.values();
         int validate = 0;

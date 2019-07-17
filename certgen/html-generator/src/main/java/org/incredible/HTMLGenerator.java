@@ -19,7 +19,7 @@ public class HTMLGenerator {
 
     private HTMLModel htmlModel = new HTMLModel();
 
-
+//todo velocity.init() should called once if template is same
     public void generateHTML(Assertion assertion, String htmlString) {
 
         String id = assertion.getId().split("Certificate/")[1];
@@ -59,6 +59,7 @@ public class HTMLGenerator {
         String id = assertion.getId().split("Certificate/")[1];
         File file = new File(id + ".png");
         String path = file.getPath();
+        //todo html model needs to be dynamic
         htmlModel.setCourse(assertion.getBadge().getName());
         htmlModel.setRecipient(assertion.getRecipient().getName());
         htmlModel.setDated(assertion.getIssuedOn());

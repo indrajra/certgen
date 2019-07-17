@@ -184,7 +184,6 @@ public class Main {
     public static CertModel getInputModel(CSVRecord csvRecord) {
         CertModelFactory certModelFactory = new CertModelFactory(csvProperties);
         CertModel model = certModelFactory.create(csvRecord);
-        model.setSignatoryList(keyPair);
         logger.info("csv row => {}", csvRecord);
         logger.info("Model created is => {}", model.toString());
         return model;
@@ -211,7 +210,7 @@ public class Main {
         List<String> text = new ArrayList<>();
         List<String> data = new ArrayList<>();
         List<String> filename = new ArrayList<>();
-        text.add(properties.getProperty("QRCodeName"));
+        text.add("123456");
         data.add(url);
         filename.add(certificateExtension.getId().split("Certificate/")[1]);
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();

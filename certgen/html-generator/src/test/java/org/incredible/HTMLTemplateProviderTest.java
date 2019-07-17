@@ -23,6 +23,8 @@ public class HTMLTemplateProviderTest {
     public void tearDown() throws Exception {
     }
 
+
+    //todo rename
     @Test
     public void checkHtmlTemplateIsValidTest() {
 
