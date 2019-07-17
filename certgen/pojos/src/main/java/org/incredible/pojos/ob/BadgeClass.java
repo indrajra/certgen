@@ -41,6 +41,10 @@ public class BadgeClass extends OBBase {
     /**
      * HTTP URL to the issuer of this credential - Profile
      */
+
+
+
+    //todo make this an object
     private String issuer;
 
     private AlignmentObject alignment;

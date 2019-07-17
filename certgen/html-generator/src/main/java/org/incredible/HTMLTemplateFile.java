@@ -44,7 +44,7 @@ public class HTMLTemplateFile extends HTMLTemplateProvider {
         try {
             result = loader.getResource(file).getFile();
         } catch (Exception e) {
-            logger.error("Exception while retrieving the path of the file {}",e.getMessage());
+            logger.error("Exception while retrieving the path of the file {}", e.getMessage());
         } finally {
             return result;
         }

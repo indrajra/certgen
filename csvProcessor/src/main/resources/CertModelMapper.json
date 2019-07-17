@@ -10,5 +10,6 @@
   "IssuedDate": "IssuedDate",
   "ValidFrom": "ValidFrom",
   "Expiry": "Expiry",
-  "SignatoryList": "SignatoryList"
+  "SignatoryList": "SignatoryList",
+  "AssessedOn": "AssessedOn"
 }

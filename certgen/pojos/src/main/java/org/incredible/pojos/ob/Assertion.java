@@ -2,9 +2,9 @@ package org.incredible.pojos.ob;
 
 
 import org.incredible.pojos.CompositeIdentityObject;
+import org.incredible.pojos.ob.exeptions.InvalidDateFormatException;
 import org.incredible.pojos.ob.valuator.ExpiryDateValuator;
 import org.incredible.pojos.ob.valuator.IssuedDateValuator;
-
 
 
 /**
@@ -86,7 +86,7 @@ public class Assertion extends OBBase {
         return issuedOn;
     }
 
-    public void setIssuedOn(String issuedOn) {
+    public void setIssuedOn(String issuedOn) throws InvalidDateFormatException {
 
         IssuedDateValuator issuedDateValuator = new IssuedDateValuator();
         try {
@@ -135,7 +135,9 @@ public class Assertion extends OBBase {
         return expires;
     }
 
-    public void setExpires(String expires) {
+    public void setExpires(String expires) throws InvalidDateFormatException {
+
+        //todo remove Ille
         try {
             ExpiryDateValuator valuator = new ExpiryDateValuator(this.getIssuedOn());
             if (valuator.evaluates(expires) == null) {
@@ -143,7 +145,7 @@ public class Assertion extends OBBase {
             } else
                 this.expires = valuator.evaluates(expires);
 
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
         }
 
     }

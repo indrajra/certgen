@@ -1,6 +1,8 @@
 package org.incredible.pojos.ob.valuator;
 
-import java.text.DateFormat;
+import org.incredible.pojos.ob.exeptions.InvalidDateFormatException;
+
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -16,28 +18,20 @@ public class IssuedDateValuator implements IEvaluator {
     };
 
     @Override
-    public String evaluates(Object inputVal) {
+    public String evaluates(Object inputVal) throws InvalidDateFormatException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Calendar cal = Calendar.getInstance();
         Date date = convertToDate((String) inputVal);
-        if (date == null) {
+        cal.setTime(date);
+        return simpleDateFormat.format(cal.getTime());
 
-            /** if date is null get current date and time **/
-            date = new Date();
-            DateFormat dateFormat = simpleDateFormat;
-            return dateFormat.format(date);
-
-        } else {
-            cal.setTime(date);
-            return simpleDateFormat.format(cal.getTime());
-        }
     }
 
 
-    public static Date convertToDate(String input) {
+    public Date convertToDate(String input) throws InvalidDateFormatException {
         Date date = null;
         if (null == input) {
-            return null;
+            throw new InvalidDateFormatException("issued date cannot be null");
         }
         for (SimpleDateFormat format : dateFormats) {
             try {
@@ -45,12 +39,13 @@ public class IssuedDateValuator implements IEvaluator {
                 date = format.parse(input);
             } catch (ParseException e) {
             }
-            if (date != null) {
+            if (date != null)
                 break;
-            }
         }
+        if (date == null) {
+            throw new InvalidDateFormatException("issued date is not in valid format");
 
-        return date;
+        } else return date;
     }
 
 }
