@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
+
 import static org.junit.Assert.*;
 
 public class HTMLTemplateProviderTest {
@@ -24,9 +26,9 @@ public class HTMLTemplateProviderTest {
     }
 
 
-    //todo rename
+    //todo rename - done
     @Test
-    public void checkHtmlTemplateIsValidTest() {
+    public void TestValidHTMlTemplate() {
 
         HTMLTemplateFile htmlTemplateFile = new HTMLTemplateFile("ValidTemplate.html");
         Boolean valid = htmlTemplateProvider.checkHtmlTemplateIsValid(htmlTemplateFile.getTemplateContent());
@@ -35,7 +37,7 @@ public class HTMLTemplateProviderTest {
     }
 
     @Test
-    public void checkHtmlTemplateIValidTest() {
+    public void TestInValidHTMLTemplate() {
 
         HTMLTemplateFile htmlTemplateFile = new HTMLTemplateFile("InvalidTemplate.html");
         Boolean valid = htmlTemplateProvider.checkHtmlTemplateIsValid(htmlTemplateFile.getTemplateContent());

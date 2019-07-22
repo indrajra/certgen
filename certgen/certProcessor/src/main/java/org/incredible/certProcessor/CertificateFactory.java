@@ -12,7 +12,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
-import java.time.Instant;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -33,21 +33,16 @@ public class CertificateFactory {
 
     private static SignatureHelper signatureHelper;
 
-    public CertificateExtension createCertificate(CertModel certModel, String context) throws InvalidDateFormatException {
-
-        /**
-         * to read application.properties
-         */
-
-        Properties properties = readPropertiesFile();
+    public CertificateExtension createCertificate(CertModel certModel, String context, HashMap<String, String> properties) throws InvalidDateFormatException {
 
         //todo take property file as input
-        uuid = properties.getProperty("DOMAIN") + UUID.randomUUID().toString();
+        uuid = properties.get("DOMAIN") + UUID.randomUUID().toString();
 
         CertificateExtensionBuilder certificateExtensionBuilder = new CertificateExtensionBuilder(context);
         CompositeIdentityObjectBuilder compositeIdentityObjectBuilder = new CompositeIdentityObjectBuilder(context);
         BadgeClassBuilder badgeClassBuilder = new BadgeClassBuilder(context);
-        AssessedEvidenceBuilder assessedEvidenceBuilder = new AssessedEvidenceBuilder(properties.getProperty("AssessedDomain"));
+        AssessedEvidenceBuilder assessedEvidenceBuilder = new AssessedEvidenceBuilder(properties.get("AssessedDomain"));
+        IssuerBuilder issuerBuilder = new IssuerBuilder(context);
         SignatureBuilder signatureBuilder = new SignatureBuilder();
 
 
@@ -62,7 +57,7 @@ public class CertificateFactory {
 
         //todo decide hosted or signed badge based on config
 
-        String[] type = new String[]{"hosted"};
+        String[] type = new String[]{properties.get("typeOfVerification")};
         VerificationObject verificationObject = new VerificationObject();
         verificationObject.setType(type);
 
@@ -73,14 +68,16 @@ public class CertificateFactory {
                 .setHashed(false).
                 setType(new String[]{"phone"});
 
+
+        issuerBuilder.setId(properties.get("IssuerUrl")).setName(certModel.getIssuer());
         /**
          * badge class object
          * **/
 
         badgeClassBuilder.setName(certModel.getCourseName()).setDescription(certModel.getCertificateDescription())
-                .setId(properties.getProperty("BadgeUrl")).setCriteria(criteria)
+                .setId(properties.get("BadgeUrl")).setCriteria(criteria)
                 .setImage(certModel.getCertificateLogo()).
-                setIssuer(properties.getProperty("IssuerUrl"));
+                setIssuer(issuerBuilder.build());
 
 
         /**
@@ -116,10 +113,7 @@ public class CertificateFactory {
 //        certificateExtensionBuilder.setSignature(signatureBuilder.build());
 //
 //        logger.info("signed certificate is valid {}", verifySignature(toSignCertificate, signatureValue));
-
         logger.info("certificate extension => {}", certificateExtensionBuilder.build());
-
-
         return certificateExtensionBuilder.build();
     }
 

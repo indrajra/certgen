@@ -13,9 +13,6 @@ import org.incredible.HTMLTemplateFile;
 import org.incredible.certProcessor.CertModel;
 import org.incredible.certProcessor.CertificateFactory;
 import org.incredible.pojos.CertificateExtension;
-import org.incredible.pojos.ob.Assertion;
-
-import org.incredible.pojos.ob.exeptions.InvalidDateFormatException;
 import org.incredible.utils.KeyGenerator;
 import org.incredible.utils.StorageParams;
 import org.slf4j.Logger;
@@ -31,8 +28,6 @@ import java.util.List;
 
 
 public class Main {
-
-    /** to get each row in csv file **/
 
 
     /**
@@ -108,6 +103,13 @@ public class Main {
      */
     private static KeyPair keyPair;
 
+    /**
+     * to get all the application properties
+     */
+    private static HashMap<String, String> property = new HashMap<>();
+
+    private static ArrayList<CertificateExtension> listOfCertificate = new ArrayList<>();
+
 
     private static String getPath(String file) {
         String result = null;
@@ -151,28 +153,35 @@ public class Main {
     }
 
     public static void main(String[] args) {
-
         readFile(modelFileName);
         initializeKeys();
         readCSV(getPath(csvFileName));
         initContext();
-        /** iterate each inputmodel to generate certificate **/
+
+        /**
+         * iterate each inputmodel to generate certificate
+         */
+
+        for (String key : properties.stringPropertyNames()) {
+            String value = properties.getProperty(key);
+            property.put(key, value);
+        }
 
         for (int row = 0; row < certModelsList.size(); row++) {
             try {
-                CertificateExtension certificate = certificateFactory.createCertificate(certModelsList.get(row), context);
-//                File file = new File(certificate.getId().split("Certificate/")[1] + ".json");
-//                mapper.writeValue(file, certificate);
-//                String url = uploadFileToCloud(file);
+                CertificateExtension certificate = certificateFactory.createCertificate(certModelsList.get(row), context, property);
+                listOfCertificate.add(certificate);
+                File file = new File(certificate.getId().split("Certificate/")[1] + ".json");
+                mapper.writeValue(file, certificate);
+                String url = uploadFileToCloud(file);
                 generateQRCodeForCertificate(certificate, certificate.getId() + ".json");
                 generateHtmlTemplateForCertificate(certificate);
-
-            } catch (InvalidDateFormatException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
+                logger.error("exception while creating certificates {}", e.getMessage());
             }
         }
+//        generateHtmlTemplateForListOfCertificate();
 
     }
 
@@ -231,16 +240,25 @@ public class Main {
     /**
      * generate Html Template for certificate
      **/
-    private static void generateHtmlTemplateForCertificate(Assertion assertion) throws Exception {
-        HTMLGenerator htmlTemplateGenerator = new HTMLGenerator();
+    private static void generateHtmlTemplateForCertificate(CertificateExtension certificateExtension) throws Exception {
+
         HTMLTemplateFile htmlTemplateFile = new HTMLTemplateFile(templateName);
+        HTMLGenerator htmlTemplateGenerator = new HTMLGenerator(htmlTemplateFile.getTemplateContent());
         Boolean valid = htmlTemplateFile.checkHtmlTemplateIsValid(htmlTemplateFile.getTemplateContent());
         if (valid) {
-            htmlTemplateGenerator.generateHTML(assertion, htmlTemplateFile.getTemplateContent());
-//            File file = new File(assertion.getId().split("Certificate/")[1] + ".html");
-//            uploadFileToCloud(file);
-        } else throw new Exception("HTML template is not valid");
+            htmlTemplateGenerator.generateHTMLForSingleCertificate(certificateExtension);
+            File file = new File(certificateExtension.getId().split("Certificate/")[1] + ".html");
+            uploadFileToCloud(file);
+        } else {
+            throw new Exception("HTML template is not valid");
+        }
 
+    }
+
+    private static void generateHtmlTemplateForListOfCertificate() {
+        HTMLTemplateFile htmlTemplateFile = new HTMLTemplateFile(templateName);
+        HTMLGenerator htmlGenerator = new HTMLGenerator(htmlTemplateFile.getTemplateContent());
+        htmlGenerator.generateHTMLForListOfCertificate(listOfCertificate);
     }
 
     private static void initContext() {
@@ -254,7 +272,7 @@ public class Main {
             context = domain + "/" + contextFileName;
             logger.info("Context file Found : {} ", file.exists());
         } catch (IOException e) {
-
+            logger.info("Exception while initializing context {}", e.getMessage());
         }
 
     }
@@ -268,8 +286,7 @@ public class Main {
      */
 
     private static String uploadFileToCloud(File file) {
-        StorageParams storageParams = new StorageParams();
-        String url = storageParams.upload(properties.getProperty("CONTAINER_NAME"), "", file, false);
+        String url = StorageParams.upload(properties.getProperty("CONTAINER_NAME"), "", file, false);
         return url;
 
     }

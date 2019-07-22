@@ -1,7 +1,6 @@
 package org.incredible.pojos.ob;
 
 
-
 public class BadgeClass extends OBBase {
     /**
      * Unique IRI for the badge - HTTP URL or URN
@@ -43,9 +42,8 @@ public class BadgeClass extends OBBase {
      */
 
 
-
     //todo make this an object
-    private String issuer;
+    private Issuer issuer;
 
     private AlignmentObject alignment;
 
@@ -111,11 +109,11 @@ public class BadgeClass extends OBBase {
         this.criteria = criteria;
     }
 
-    public String getIssuer() {
+    public Issuer getIssuer() {
         return issuer;
     }
 
-    public void setIssuer(String issuer) {
+    public void setIssuer(Issuer issuer) {
         this.issuer = issuer;
     }
 

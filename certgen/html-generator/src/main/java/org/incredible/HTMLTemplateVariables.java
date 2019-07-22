@@ -2,9 +2,12 @@ package org.incredible;
 
 public enum HTMLTemplateVariables {
 
-    recipient,
-    course,
-    img,
-    title,
-    dated
+    $recipient,
+    $course,
+    $title,
+    $img,
+    $dated,
+    $dateInFormat,
+    $signatoryName,
+    $signatory,
 }

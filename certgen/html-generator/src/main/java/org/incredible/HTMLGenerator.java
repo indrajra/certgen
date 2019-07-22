@@ -3,11 +3,15 @@ package org.incredible;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.incredible.pojos.CertificateExtension;
 import org.incredible.pojos.ob.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,30 +21,54 @@ public class HTMLGenerator {
 
     private static Logger logger = LoggerFactory.getLogger(HTMLGenerator.class);
 
-    private HTMLModel htmlModel = new HTMLModel();
+    private static String HtmlString;
+
+    public HTMLGenerator(String htmlString) {
+        HtmlString = htmlString;
+    }
+
+    private HashSet<String> htmlReferenceVariable = new HashSet<>();
 
 //todo velocity.init() should called once if template is same
-    public void generateHTML(Assertion assertion, String htmlString) {
 
-        String id = assertion.getId().split("Certificate/")[1];
-        mapToHTMLModel(assertion);
+    /**
+     * generating html for list of certificates where Velocity.init() called once
+     *
+     * @param certificateExtension list of certificates
+     */
+    public void generateHTMLForListOfCertificate(ArrayList<CertificateExtension> certificateExtension) {
+        htmlReferenceVariable = HTMLTemplateProvider.storeAllHTMLTemplateVariables(HtmlString);
         Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         Velocity.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         Velocity.init();
+        for (int index = 0; index < certificateExtension.size(); index++) {
+            createContext(certificateExtension.get(index));
+        }
+    }
 
-        /**  create a context and add data **/
+    public void generateHTMLForSingleCertificate(CertificateExtension certificateExtension) {
+        htmlReferenceVariable = HTMLTemplateProvider.storeAllHTMLTemplateVariables(HtmlString);
+        Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        Velocity.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+        Velocity.init();
+        createContext(certificateExtension);
+    }
+
+    private void createContext(CertificateExtension certificateExtension) {
         VelocityContext context = new VelocityContext();
+        String id = certificateExtension.getId().split("Certificate/")[1];
+        HTMLVarResolver htmlVarResolver = new HTMLVarResolver(certificateExtension);
+        Iterator<String> itr = htmlReferenceVariable.iterator();
 
-        HTMLTemplateVariables htmlMacros[] = HTMLTemplateVariables.values();
-
-        for (int i = 0; i < htmlMacros.length; i++) {
-            String methodName = "get" + capitalize(htmlMacros[i].toString());
+        while (itr.hasNext()) {
+            String macro = itr.next().substring(1);
+            String methodName = "get" + capitalize(macro);
             try {
-                Method method = htmlModel.getClass().getMethod(methodName);
+                Method method = htmlVarResolver.getClass().getMethod(methodName);
                 method.setAccessible(true);
-                context.put(htmlMacros[i].toString(), method.invoke(htmlModel));
+                context.put(macro, method.invoke(htmlVarResolver));
                 Writer writer = new FileWriter(new File(id + ".html"));
-                Velocity.evaluate(context, writer, "velocity", htmlString);
+                Velocity.evaluate(context, writer, "velocity", HtmlString);
                 writer.flush();
                 writer.close();
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | IOException e) {
@@ -50,26 +78,9 @@ public class HTMLGenerator {
         }
     }
 
-    /**
-     * to read html mapper
-     */
-
-
-    private void mapToHTMLModel(Assertion assertion) {
-        String id = assertion.getId().split("Certificate/")[1];
-        File file = new File(id + ".png");
-        String path = file.getPath();
-        //todo html model needs to be dynamic
-        htmlModel.setCourse(assertion.getBadge().getName());
-        htmlModel.setRecipient(assertion.getRecipient().getName());
-        htmlModel.setDated(assertion.getIssuedOn());
-        htmlModel.setImg(path);
-        htmlModel.setTitle("Certificate");
-    }
 
     private String capitalize(String input) {
-        String output = input.substring(0, 1).toUpperCase() + input.substring(1);
-        return output;
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 
 

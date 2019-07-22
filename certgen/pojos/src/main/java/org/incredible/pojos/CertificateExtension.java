@@ -1,6 +1,7 @@
 package org.incredible.pojos;
 
 import org.incredible.pojos.ob.Assertion;
+import org.incredible.pojos.ob.Issuer;
 
 
 /**
@@ -15,7 +16,7 @@ public class CertificateExtension extends Assertion {
     /**
      * List of IRIs to SignatoryExtension
      */
-    private String[] signatory;
+    private Issuer[] signatory;
 
     /**
      * A HTTP URL to a printable version of this certificate.
@@ -52,11 +53,11 @@ public class CertificateExtension extends Assertion {
         this.awardedThrough = awardedThrough;
     }
 
-    public String[] getSignatory() {
+    public Issuer[] getSignatory() {
         return signatory;
     }
 
-    public void setSignatory(String[] signatory) {
+    public void setSignatory(Issuer[] signatory) {
         this.signatory = signatory;
     }
 

@@ -3,6 +3,7 @@ package org.incredible.builders;
 import org.incredible.pojos.ob.AlignmentObject;
 import org.incredible.pojos.ob.BadgeClass;
 import org.incredible.pojos.ob.Criteria;
+import org.incredible.pojos.ob.Issuer;
 
 
 public class BadgeClassBuilder implements IBuilder<BadgeClass> {
@@ -39,8 +40,6 @@ public class BadgeClassBuilder implements IBuilder<BadgeClass> {
     }
 
 
-
-
     public BadgeClassBuilder setImage(String image) {
         badgeClass.setImage(image);
         return this;
@@ -53,15 +52,15 @@ public class BadgeClassBuilder implements IBuilder<BadgeClass> {
     }
 
 
-    public BadgeClassBuilder setIssuer(String issuer) {
+    public BadgeClassBuilder setIssuer(Issuer issuer) {
         badgeClass.setIssuer(issuer);
         return this;
     }
 
 
     public BadgeClassBuilder setAlignment(AlignmentObject alignment) {
-         badgeClass.setAlignment(alignment);
-         return this;
+        badgeClass.setAlignment(alignment);
+        return this;
     }
 
 
