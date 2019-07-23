@@ -7,7 +7,7 @@ public enum HTMLTemplateVariables {
     $title,
     $img,
     $dated,
-    $dateInFormat,
+    $dateInFormatOfWords,
     $signatoryName,
     $signatory,
 }

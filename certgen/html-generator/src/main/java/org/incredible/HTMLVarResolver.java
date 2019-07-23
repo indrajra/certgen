@@ -30,7 +30,7 @@ public class HTMLVarResolver {
 
 
     public String getImg() {
-        return certificateExtension.getId().split("Certificate/")[1] + "png";
+        return certificateExtension.getId().split("Certificate/")[1] + ".png";
     }
 
 
@@ -44,7 +44,7 @@ public class HTMLVarResolver {
     }
 
 
-    public String getDateInFormat() {
+    public String getDateInFormatOfWords() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         String dateInFormat;
         try {
