@@ -10,31 +10,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 public abstract class HTMLTemplateProvider {
 
     abstract public String getTemplateContent();
 
     private static Logger logger = LoggerFactory.getLogger(HTMLTemplateProvider.class);
-
+    /**
+     * variables present in html template
+     */
     private static HashSet<String> htmlReferenceVariable = new HashSet<>();
+
+    private static HashSet<String> htmlTemplateVariables = new HashSet<>();
 
 
     //todo html template and model tight coupling must be there
     public Boolean checkHtmlTemplateIsValid(String htmlString) {
         storeAllHTMLTemplateVariables(htmlString);
-        HTMLTemplateVariables[] htmlMacros = HTMLTemplateVariables.values();
+        for (HTMLTemplateVariables htmlTemplateVariable : HTMLTemplateVariables.values()) {
+            htmlTemplateVariables.add(htmlTemplateVariable.toString());
+        }
+        Iterator<String> iterator = htmlReferenceVariable.iterator();
         HashSet<String> invalidVariables = new HashSet<>();
         int validate = 0;
         try {
-            for (int index = 0; index < htmlMacros.length; index++) {
-                if (htmlReferenceVariable.contains(htmlMacros[index].toString())) {
+            while (iterator.hasNext()) {
+                if (htmlTemplateVariables.contains(iterator.next()))
                     validate++;
-                } else {
-                    invalidVariables.add(htmlMacros[index].toString());
-                }
+                else invalidVariables.add(iterator.next());
             }
-            if (validate <= htmlMacros.length && validate == htmlReferenceVariable.size()) {
+            if (validate <= htmlTemplateVariables.size() && validate == htmlReferenceVariable.size()) {
                 logger.info("given HTML template is valid");
                 htmlReferenceVariable.clear();
                 return true;
@@ -48,15 +54,13 @@ public abstract class HTMLTemplateProvider {
         }
     }
 
-    private static ParserVisitor visitor = new BaseVisitor() {
-        @Override
-        public Object visit(final ASTReference node, final Object data) {
-            htmlReferenceVariable.add(node.literal());
-            return null;
-        }
-    };
 
-
+    /**
+     * to get all the reference variables present in htmlString
+     *
+     * @param htmlString html file read in the form of string
+     * @return set of reference variables
+     */
     public static HashSet<String> storeAllHTMLTemplateVariables(String htmlString) {
         RuntimeInstance runtimeInstance = new RuntimeInstance();
         SimpleNode node = null;
@@ -68,6 +72,14 @@ public abstract class HTMLTemplateProvider {
         visitor.visit(node, null);
         return htmlReferenceVariable;
     }
+
+    private static ParserVisitor visitor = new BaseVisitor() {
+        @Override
+        public Object visit(final ASTReference node, final Object data) {
+            htmlReferenceVariable.add(node.literal());
+            return null;
+        }
+    };
 
 }
 

@@ -12,7 +12,6 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.incredible.pojos.CertificateExtension;
-import org.incredible.pojos.ob.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,18 +55,16 @@ public class HTMLGenerator {
 
     private void createContext(CertificateExtension certificateExtension) {
         VelocityContext context = new VelocityContext();
-        String id = certificateExtension.getId().split("Certificate/")[1];
         HTMLVarResolver htmlVarResolver = new HTMLVarResolver(certificateExtension);
-        Iterator<String> itr = htmlReferenceVariable.iterator();
-
-        while (itr.hasNext()) {
-            String macro = itr.next().substring(1);
+        Iterator<String> iterator = htmlReferenceVariable.iterator();
+        while (iterator.hasNext()) {
+            String macro = iterator.next().substring(1);
             String methodName = "get" + capitalize(macro);
             try {
                 Method method = htmlVarResolver.getClass().getMethod(methodName);
                 method.setAccessible(true);
                 context.put(macro, method.invoke(htmlVarResolver));
-                Writer writer = new FileWriter(new File(id + ".html"));
+                Writer writer = new FileWriter(new File(certificateExtension.getId().split("Certificate/")[1] + ".html"));
                 Velocity.evaluate(context, writer, "velocity", HtmlString);
                 writer.flush();
                 writer.close();
