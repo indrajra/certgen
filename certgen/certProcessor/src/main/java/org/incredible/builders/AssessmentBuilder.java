@@ -1,14 +1,9 @@
 package org.incredible.builders;
 
-import org.incredible.pojos.AssessedEvidence;
 import org.incredible.pojos.Assessment;
 
 public class AssessmentBuilder implements IBuilder<Assessment> {
 
-
-    /**
-     * TODO add context for assessment
-     */
 
     Assessment assessment;
 

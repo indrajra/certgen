@@ -35,7 +35,6 @@ public class CertificateFactory {
 
     public CertificateExtension createCertificate(CertModel certModel, String context, HashMap<String, String> properties) throws InvalidDateFormatException {
 
-        //todo take property file as input
         uuid = properties.get("DOMAIN") + UUID.randomUUID().toString();
 
         CertificateExtensionBuilder certificateExtensionBuilder = new CertificateExtensionBuilder(context);

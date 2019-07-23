@@ -1,20 +1,19 @@
 package org.ekstep;
 
-import java.util.List;
 
 public class QRCodeGenerationModel {
 
-    private List<String> data;
+    private String data;
     private String errorCorrectionLevel = "L";
     private int pixelsPerBlock = 6;
     private int qrCodeMargin = 4;
-    private List<String> text;
+    private String text;
     private String textFontName = "Verdana";
     private int textFontSize = 10;
     private double textCharacterSpacing = 1;
     private int imageBorderSize = 0;
     private String colorModel = "black";
-    private List<String> fileName;
+    private String fileName;
     private String fileFormat = "png";
     private int qrCodeMarginBottom = 4;
     private int imageMargin = 2;
@@ -35,11 +34,11 @@ public class QRCodeGenerationModel {
         this.qrCodeMarginBottom = qrCodeMarginBottom;
     }
 
-    public List<String> getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(List<String> data) {
+    public void setData(String data) {
         this.data = data;
     }
 
@@ -67,11 +66,11 @@ public class QRCodeGenerationModel {
         this.qrCodeMargin = qrCodeMargin;
     }
 
-    public List<String> getText() {
+    public String getText() {
         return text;
     }
 
-    public void setText(List<String> text) {
+    public void setText(String text) {
         this.text = text;
     }
 
@@ -115,11 +114,11 @@ public class QRCodeGenerationModel {
         this.colorModel = colorModel;
     }
 
-    public List<String> getFileName() {
+    public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(List<String> fileName) {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 

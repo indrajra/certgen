@@ -9,7 +9,6 @@ import org.incredible.HTMLTemplateProvider;
 import org.incredible.certProcessor.CertModel;
 import org.incredible.certProcessor.CertificateFactory;
 import org.incredible.pojos.CertificateExtension;
-import org.incredible.pojos.ob.Assertion;
 import org.incredible.pojos.ob.exeptions.InvalidDateFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +16,8 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
 
 public class CertificateGenerator {
 
@@ -30,8 +28,6 @@ public class CertificateGenerator {
     private final String context;
 
     private static Logger logger = LoggerFactory.getLogger(CertificateFactory.class);
-
-    private Boolean isValid;
 
     private HashMap<String, String> properties;
 
@@ -47,30 +43,23 @@ public class CertificateGenerator {
 
         CertificateExtension certificateExtension = certificateFactory.createCertificate(certModel, context, properties);
         generateQRCodeForCertificate(certificateExtension);
-        isValid = htmlTemplateProvider.checkHtmlTemplateIsValid(htmlTemplateProvider.getTemplateContent());
-        if (isValid) {
+        if (htmlTemplateProvider.checkHtmlTemplateIsValid(htmlTemplateProvider.getTemplateContent())) {
             HTMLGenerator htmlGenerator = new HTMLGenerator(htmlTemplateProvider.getTemplateContent());
-            htmlGenerator.generateHTMLForSingleCertificate(certificateExtension);
+            htmlGenerator.createContext(certificateExtension);
             return certificateExtension.getId().split("Certificate/")[1];
         } else return null;
     }
 
-    private void generateQRCodeForCertificate(Assertion assertion) {
-
-        List<String> text = new ArrayList<>();
-        List<String> data = new ArrayList<>();
-        List<String> filename = new ArrayList<>();
-        List<File> QrcodeList;
+    private void generateQRCodeForCertificate(CertificateExtension certificateExtension) {
+        String id = certificateExtension.getId().split("Certificate/")[1];
+        File Qrcode;
         //todo generate n digit code
-        text.add("123456");
-        data.add(assertion.getBadge().getName());
-        filename.add(assertion.getId().split("Certificate/")[1]);
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();
-        qrCodeGenerationModel.setText(text);
-        qrCodeGenerationModel.setFileName(filename);
-        qrCodeGenerationModel.setData(data);
+        qrCodeGenerationModel.setText("123456");
+        qrCodeGenerationModel.setFileName(id);
+        qrCodeGenerationModel.setData(certificateExtension.getId() + ".json");
         try {
-            QrcodeList = QRCodeImageGenerator.createQRImages(qrCodeGenerationModel, "container", "path");
+            Qrcode = QRCodeImageGenerator.createQRImages(qrCodeGenerationModel);
 
         } catch (IOException | WriterException | FontFormatException | NotFoundException e) {
             logger.error("Exception while generating QRcode {}", e.getMessage());

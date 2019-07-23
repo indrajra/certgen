@@ -35,7 +35,6 @@ public class CertModel {
     private String issuer;
     private String validFrom;
     private String expiry;
-    // todo array of issuer object
     private Profile[] signatoryList;
     private String assessedOn;
 

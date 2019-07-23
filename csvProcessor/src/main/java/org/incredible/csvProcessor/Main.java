@@ -12,7 +12,9 @@ import org.incredible.HTMLGenerator;
 import org.incredible.HTMLTemplateFile;
 import org.incredible.certProcessor.CertModel;
 import org.incredible.certProcessor.CertificateFactory;
+import org.incredible.certificateGenerator.CertificateGenerator;
 import org.incredible.pojos.CertificateExtension;
+import org.incredible.pojos.ob.exeptions.InvalidDateFormatException;
 import org.incredible.utils.KeyGenerator;
 import org.incredible.utils.StorageParams;
 import org.slf4j.Logger;
@@ -24,7 +26,6 @@ import java.nio.file.Files;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
-import java.util.List;
 
 
 public class Main {
@@ -37,8 +38,6 @@ public class Main {
     private static ArrayList<CertModel> certModelsList = new ArrayList();
 
     private static Logger logger = LoggerFactory.getLogger(Main.class);
-
-    private static List<File> QrcodeList;
 
     /**
      * to get the file name
@@ -141,7 +140,6 @@ public class Main {
             try {
                 CSVParser csvParser = csvReader.readCsvFileRows(filename);
                 setCertModelsList(csvParser);
-
             } catch (IOException io) {
                 logger.error("CSV Parsing exception {}, {}", io.getMessage(), io.getStackTrace());
             }
@@ -181,8 +179,6 @@ public class Main {
                 logger.error("exception while creating certificates {}", e.getMessage());
             }
         }
-//        generateHtmlTemplateForListOfCertificate();
-
     }
 
 
@@ -215,21 +211,14 @@ public class Main {
      * to generateQRCode for certificate
      **/
     private static void generateQRCodeForCertificate(CertificateExtension certificateExtension, String url) {
-
-        List<String> text = new ArrayList<>();
-        List<String> data = new ArrayList<>();
-        List<String> filename = new ArrayList<>();
-        text.add("123456");
-        data.add(url);
-        filename.add(certificateExtension.getId().split("Certificate/")[1]);
+        File QrcodeList;
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();
-        qrCodeGenerationModel.setText(text);
-        qrCodeGenerationModel.setFileName(filename);
-        qrCodeGenerationModel.setData(data);
+        qrCodeGenerationModel.setText("123456");
+        qrCodeGenerationModel.setFileName(certificateExtension.getId().split("Certificate/")[1]);
+        qrCodeGenerationModel.setData(url);
         QRCodeImageGenerator qrCodeImageGenerator = new QRCodeImageGenerator();
-
         try {
-            QrcodeList = qrCodeImageGenerator.createQRImages(qrCodeGenerationModel, "container", "path");
+            QrcodeList = qrCodeImageGenerator.createQRImages(qrCodeGenerationModel);
 
         } catch (IOException | WriterException | FontFormatException | NotFoundException e) {
             logger.info("Exception while generating QRcode {}", e.getMessage());
@@ -244,21 +233,14 @@ public class Main {
 
         HTMLTemplateFile htmlTemplateFile = new HTMLTemplateFile(templateName);
         HTMLGenerator htmlTemplateGenerator = new HTMLGenerator(htmlTemplateFile.getTemplateContent());
-        Boolean valid = htmlTemplateFile.checkHtmlTemplateIsValid(htmlTemplateFile.getTemplateContent());
-        if (valid) {
-            htmlTemplateGenerator.generateHTMLForSingleCertificate(certificateExtension);
+        if (htmlTemplateFile.checkHtmlTemplateIsValid(htmlTemplateFile.getTemplateContent())) {
+            htmlTemplateGenerator.createContext(certificateExtension);
             File file = new File(certificateExtension.getId().split("Certificate/")[1] + ".html");
             uploadFileToCloud(file);
         } else {
             throw new Exception("HTML template is not valid");
         }
 
-    }
-
-    private static void generateHtmlTemplateForListOfCertificate() {
-        HTMLTemplateFile htmlTemplateFile = new HTMLTemplateFile(templateName);
-        HTMLGenerator htmlGenerator = new HTMLGenerator(htmlTemplateFile.getTemplateContent());
-        htmlGenerator.generateHTMLForListOfCertificate(listOfCertificate);
     }
 
     private static void initContext() {

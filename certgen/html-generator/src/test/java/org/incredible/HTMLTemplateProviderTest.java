@@ -26,7 +26,6 @@ public class HTMLTemplateProviderTest {
     }
 
 
-    //todo rename - done
     @Test
     public void TestValidHTMlTemplate() {
 
