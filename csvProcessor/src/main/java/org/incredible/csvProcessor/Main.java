@@ -10,6 +10,7 @@ import org.ekstep.util.QRCodeImageGenerator;
 
 import org.incredible.HTMLGenerator;
 import org.incredible.HTMLTemplateFile;
+import org.incredible.PdfConverter;
 import org.incredible.certProcessor.CertModel;
 import org.incredible.certProcessor.CertificateFactory;
 import org.incredible.certificateGenerator.CertificateGenerator;
@@ -211,14 +212,14 @@ public class Main {
      * to generateQRCode for certificate
      **/
     private static void generateQRCodeForCertificate(CertificateExtension certificateExtension, String url) {
-        File QrcodeList;
+        File Qrcode;
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();
         qrCodeGenerationModel.setText("123456");
         qrCodeGenerationModel.setFileName(certificateExtension.getId().split("Certificate/")[1]);
         qrCodeGenerationModel.setData(url);
         QRCodeImageGenerator qrCodeImageGenerator = new QRCodeImageGenerator();
         try {
-            QrcodeList = qrCodeImageGenerator.createQRImages(qrCodeGenerationModel);
+            Qrcode = qrCodeImageGenerator.createQRImages(qrCodeGenerationModel);
 
         } catch (IOException | WriterException | FontFormatException | NotFoundException e) {
             logger.info("Exception while generating QRcode {}", e.getMessage());
@@ -230,16 +231,24 @@ public class Main {
      * generate Html Template for certificate
      **/
     private static void generateHtmlTemplateForCertificate(CertificateExtension certificateExtension) throws Exception {
-
+        String id = certificateExtension.getId().split("Certificate/")[1];
         HTMLTemplateFile htmlTemplateFile = new HTMLTemplateFile(templateName);
         HTMLGenerator htmlTemplateGenerator = new HTMLGenerator(htmlTemplateFile.getTemplateContent());
         if (htmlTemplateFile.checkHtmlTemplateIsValid(htmlTemplateFile.getTemplateContent())) {
             htmlTemplateGenerator.createContext(certificateExtension);
-            File file = new File(certificateExtension.getId().split("Certificate/")[1] + ".html");
+            File file = new File(id + ".html");
             uploadFileToCloud(file);
+            convertHtmlToPdf(file, id);
         } else {
             throw new Exception("HTML template is not valid");
         }
+
+    }
+
+
+    private static void convertHtmlToPdf(File file, String id) {
+        PdfConverter pdfConverter = new PdfConverter();
+        pdfConverter.convertor(file, id);
 
     }
 

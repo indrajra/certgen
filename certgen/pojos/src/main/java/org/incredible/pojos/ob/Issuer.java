@@ -29,6 +29,7 @@ public class Issuer extends OBBase {
 
     public Issuer(String ctx) {
         setContext(ctx);
+        setType(new String[]{"Issuer"});
     }
 
     public String getId() {
