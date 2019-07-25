@@ -16,13 +16,11 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.HashMap;
+
 
 public class CertificateGenerator {
 
-    private CertificateFactory certificateFactory = new CertificateFactory();
 
     /**
      * context file url
@@ -31,48 +29,40 @@ public class CertificateGenerator {
 
     private static Logger logger = LoggerFactory.getLogger(CertificateFactory.class);
 
-    private Boolean isValid;
+    private HashMap<String, String> properties;
 
-    private HTMLGenerator htmlGenerator = new HTMLGenerator();
-
-
-    public CertificateGenerator(String context) {
+    public CertificateGenerator(String context, HashMap<String, String> properties) {
         this.context = context;
+        this.properties = properties;
     }
 
-    public String createCertificate(CertModel certModel, HTMLTemplateProvider htmlTemplateProvider, String config) throws InvalidDateFormatException {
+    private CertificateFactory certificateFactory = new CertificateFactory();
 
-        CertificateExtension certificateExtension = certificateFactory.createCertificate(certModel, context);
+
+    public String createCertificate(CertModel certModel, HTMLTemplateProvider htmlTemplateProvider, String config, String signatureConfig) throws InvalidDateFormatException {
+
+        CertificateExtension certificateExtension = certificateFactory.createCertificate(certModel, context, properties);
         generateQRCodeForCertificate(certificateExtension);
-        isValid = htmlTemplateProvider.checkHtmlTemplateIsValid(htmlTemplateProvider.getTemplateContent());
-        if (isValid) {
-            htmlGenerator.generateHTML(certificateExtension, htmlTemplateProvider.getTemplateContent());
+        if (htmlTemplateProvider.checkHtmlTemplateIsValid(htmlTemplateProvider.getTemplateContent())) {
+            HTMLGenerator htmlGenerator = new HTMLGenerator(htmlTemplateProvider.getTemplateContent());
+            htmlGenerator.createContext(certificateExtension);
             return certificateExtension.getId().split("Certificate/")[1];
         } else return null;
     }
 
-
     private void generateQRCodeForCertificate(CertificateExtension certificateExtension) {
-
-        List<String> text = new ArrayList<>();
-        List<String> data = new ArrayList<>();
-        List<String> filename = new ArrayList<>();
-        List<File> QrcodeList;
+        String id = certificateExtension.getId().split("Certificate/")[1];
+        File Qrcode;
         //todo generate n digit code
-        text.add("123456");
-        data.add(certificateExtension.getBadge().getName());
-        filename.add(certificateExtension.getId().split("Certificate/")[1]);
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();
-        qrCodeGenerationModel.setText(text);
-        qrCodeGenerationModel.setFileName(filename);
-        qrCodeGenerationModel.setData(data);
-        QRCodeImageGenerator qrCodeImageGenerator = new QRCodeImageGenerator();
-
+        qrCodeGenerationModel.setText("123456");
+        qrCodeGenerationModel.setFileName(id);
+        qrCodeGenerationModel.setData(certificateExtension.getId() + ".json");
         try {
-            QrcodeList = qrCodeImageGenerator.createQRImages(qrCodeGenerationModel, "container", "path");
+            Qrcode = QRCodeImageGenerator.createQRImages(qrCodeGenerationModel);
 
         } catch (IOException | WriterException | FontFormatException | NotFoundException e) {
-            logger.error("Exception while generating QRcode {}", e);
+            logger.error("Exception while generating QRcode {}", e.getMessage());
         }
 
     }

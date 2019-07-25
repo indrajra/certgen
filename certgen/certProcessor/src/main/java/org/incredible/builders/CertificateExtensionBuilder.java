@@ -6,6 +6,7 @@ import org.incredible.pojos.CompositeIdentityObject;
 import org.incredible.pojos.Signature;
 import org.incredible.pojos.ob.BadgeClass;
 import org.incredible.pojos.ob.Evidence;
+import org.incredible.pojos.ob.Issuer;
 import org.incredible.pojos.ob.VerificationObject;
 import org.incredible.pojos.ob.exeptions.InvalidDateFormatException;
 
@@ -30,7 +31,7 @@ public class CertificateExtensionBuilder implements IBuilder<CertificateExtensio
     }
 
 
-    public CertificateExtensionBuilder setSignatory(String[] signatory) {
+    public CertificateExtensionBuilder setSignatory(Issuer[] signatory) {
         certificateExtension.setSignatory(signatory);
         return this;
     }

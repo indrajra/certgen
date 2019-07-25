@@ -10,11 +10,11 @@ import org.ekstep.util.QRCodeImageGenerator;
 
 import org.incredible.HTMLGenerator;
 import org.incredible.HTMLTemplateFile;
+import org.incredible.PdfConverter;
 import org.incredible.certProcessor.CertModel;
 import org.incredible.certProcessor.CertificateFactory;
+import org.incredible.certificateGenerator.CertificateGenerator;
 import org.incredible.pojos.CertificateExtension;
-import org.incredible.pojos.ob.Assertion;
-
 import org.incredible.pojos.ob.exeptions.InvalidDateFormatException;
 import org.incredible.utils.KeyGenerator;
 import org.incredible.utils.StorageParams;
@@ -27,12 +27,9 @@ import java.nio.file.Files;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
-import java.util.List;
 
 
 public class Main {
-
-    /** to get each row in csv file **/
 
 
     /**
@@ -42,8 +39,6 @@ public class Main {
     private static ArrayList<CertModel> certModelsList = new ArrayList();
 
     private static Logger logger = LoggerFactory.getLogger(Main.class);
-
-    private static List<File> QrcodeList;
 
     /**
      * to get the file name
@@ -108,6 +103,13 @@ public class Main {
      */
     private static KeyPair keyPair;
 
+    /**
+     * to get all the application properties
+     */
+    private static HashMap<String, String> property = new HashMap<>();
+
+    private static ArrayList<CertificateExtension> listOfCertificate = new ArrayList<>();
+
 
     private static String getPath(String file) {
         String result = null;
@@ -139,7 +141,6 @@ public class Main {
             try {
                 CSVParser csvParser = csvReader.readCsvFileRows(filename);
                 setCertModelsList(csvParser);
-
             } catch (IOException io) {
                 logger.error("CSV Parsing exception {}, {}", io.getMessage(), io.getStackTrace());
             }
@@ -151,29 +152,34 @@ public class Main {
     }
 
     public static void main(String[] args) {
-
         readFile(modelFileName);
         initializeKeys();
         readCSV(getPath(csvFileName));
         initContext();
-        /** iterate each inputmodel to generate certificate **/
+
+        /**
+         * iterate each inputmodel to generate certificate
+         */
+
+        for (String key : properties.stringPropertyNames()) {
+            String value = properties.getProperty(key);
+            property.put(key, value);
+        }
 
         for (int row = 0; row < certModelsList.size(); row++) {
             try {
-                CertificateExtension certificate = certificateFactory.createCertificate(certModelsList.get(row), context);
-//                File file = new File(certificate.getId().split("Certificate/")[1] + ".json");
-//                mapper.writeValue(file, certificate);
-//                String url = uploadFileToCloud(file);
+                CertificateExtension certificate = certificateFactory.createCertificate(certModelsList.get(row), context, property);
+                listOfCertificate.add(certificate);
+                File file = new File(certificate.getId().split("Certificate/")[1] + ".json");
+                mapper.writeValue(file, certificate);
+                String url = uploadFileToCloud(file);
                 generateQRCodeForCertificate(certificate, certificate.getId() + ".json");
                 generateHtmlTemplateForCertificate(certificate);
-
-            } catch (InvalidDateFormatException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
+                logger.error("exception while creating certificates {}", e.getMessage());
             }
         }
-
     }
 
 
@@ -206,21 +212,14 @@ public class Main {
      * to generateQRCode for certificate
      **/
     private static void generateQRCodeForCertificate(CertificateExtension certificateExtension, String url) {
-
-        List<String> text = new ArrayList<>();
-        List<String> data = new ArrayList<>();
-        List<String> filename = new ArrayList<>();
-        text.add("123456");
-        data.add(url);
-        filename.add(certificateExtension.getId().split("Certificate/")[1]);
+        File Qrcode;
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();
-        qrCodeGenerationModel.setText(text);
-        qrCodeGenerationModel.setFileName(filename);
-        qrCodeGenerationModel.setData(data);
+        qrCodeGenerationModel.setText("123456");
+        qrCodeGenerationModel.setFileName(certificateExtension.getId().split("Certificate/")[1]);
+        qrCodeGenerationModel.setData(url);
         QRCodeImageGenerator qrCodeImageGenerator = new QRCodeImageGenerator();
-
         try {
-            QrcodeList = qrCodeImageGenerator.createQRImages(qrCodeGenerationModel, "container", "path");
+            Qrcode = qrCodeImageGenerator.createQRImages(qrCodeGenerationModel);
 
         } catch (IOException | WriterException | FontFormatException | NotFoundException e) {
             logger.info("Exception while generating QRcode {}", e.getMessage());
@@ -231,15 +230,25 @@ public class Main {
     /**
      * generate Html Template for certificate
      **/
-    private static void generateHtmlTemplateForCertificate(Assertion assertion) throws Exception {
-        HTMLGenerator htmlTemplateGenerator = new HTMLGenerator();
+    private static void generateHtmlTemplateForCertificate(CertificateExtension certificateExtension) throws Exception {
+        String id = certificateExtension.getId().split("Certificate/")[1];
         HTMLTemplateFile htmlTemplateFile = new HTMLTemplateFile(templateName);
-        Boolean valid = htmlTemplateFile.checkHtmlTemplateIsValid(htmlTemplateFile.getTemplateContent());
-        if (valid) {
-            htmlTemplateGenerator.generateHTML(assertion, htmlTemplateFile.getTemplateContent());
-//            File file = new File(assertion.getId().split("Certificate/")[1] + ".html");
-//            uploadFileToCloud(file);
-        } else throw new Exception("HTML template is not valid");
+        HTMLGenerator htmlTemplateGenerator = new HTMLGenerator(htmlTemplateFile.getTemplateContent());
+        if (htmlTemplateFile.checkHtmlTemplateIsValid(htmlTemplateFile.getTemplateContent())) {
+            htmlTemplateGenerator.createContext(certificateExtension);
+            File file = new File(id + ".html");
+            uploadFileToCloud(file);
+            convertHtmlToPdf(file, id);
+        } else {
+            throw new Exception("HTML template is not valid");
+        }
+
+    }
+
+
+    private static void convertHtmlToPdf(File file, String id) {
+        PdfConverter pdfConverter = new PdfConverter();
+        pdfConverter.convertor(file, id);
 
     }
 
@@ -254,7 +263,7 @@ public class Main {
             context = domain + "/" + contextFileName;
             logger.info("Context file Found : {} ", file.exists());
         } catch (IOException e) {
-
+            logger.info("Exception while initializing context {}", e.getMessage());
         }
 
     }
@@ -268,8 +277,7 @@ public class Main {
      */
 
     private static String uploadFileToCloud(File file) {
-        StorageParams storageParams = new StorageParams();
-        String url = storageParams.upload(properties.getProperty("CONTAINER_NAME"), "", file, false);
+        String url = StorageParams.upload(properties.getProperty("CONTAINER_NAME"), "", file, false);
         return url;
 
     }

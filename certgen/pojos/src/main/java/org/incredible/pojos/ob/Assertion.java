@@ -89,13 +89,10 @@ public class Assertion extends OBBase {
     public void setIssuedOn(String issuedOn) throws InvalidDateFormatException {
 
         IssuedDateValuator issuedDateValuator = new IssuedDateValuator();
-        try {
-            if (issuedDateValuator.evaluates(issuedOn) == null) {
-                throw new IllegalArgumentException("Issued date is not in a given format");
-            } else
-                this.issuedOn = issuedDateValuator.evaluates(issuedOn);
-        } catch (IllegalArgumentException e) {
-        }
+        if (issuedDateValuator.evaluates(issuedOn) == null) {
+            throw new InvalidDateFormatException("Issued date is not in a given format");
+        } else
+            this.issuedOn = issuedDateValuator.evaluates(issuedOn);
 
     }
 
@@ -137,16 +134,13 @@ public class Assertion extends OBBase {
 
     public void setExpires(String expires) throws InvalidDateFormatException {
 
-        //todo remove Ille
-        try {
-            ExpiryDateValuator valuator = new ExpiryDateValuator(this.getIssuedOn());
-            if (valuator.evaluates(expires) == null) {
-                throw new IllegalArgumentException("Expiry date is in wrong format");
-            } else
-                this.expires = valuator.evaluates(expires);
+        //todo remove IllegalArgumentException : done
+        ExpiryDateValuator valuator = new ExpiryDateValuator(this.getIssuedOn());
+        if (valuator.evaluates(expires) == null) {
+            throw new InvalidDateFormatException("Expiry date is in wrong format");
+        } else
+            this.expires = valuator.evaluates(expires);
 
-        } catch (IllegalArgumentException e) {
-        }
 
     }
 

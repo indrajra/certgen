@@ -1,0 +1,33 @@
+.grid{
+overflow: auto;
+}
+
+.border {
+    border: 5px solid #787878; margin: 1rem
+}
+
+.container {
+border: 10px solid #787878;
+width: fit-content;
+}
+
+.align {
+    text-align: center;
+}
+
+h2 {
+    color: orange;
+}
+.signatory1 {
+    padding: 1rem;
+    font-size: 1rem;
+    /* flex: 50%; */
+    float: left;
+
+}
+.signatory2 {
+    float: right;
+    padding: 1rem;
+    font-size: 1rem;
+}
+

@@ -33,13 +33,13 @@ public class QRCodeImageGenerator {
 
     static QRCodeWriter qrCodeWriter = new QRCodeWriter();
 
-    public static List<File> createQRImages(QRCodeGenerationModel qrGenRequest, String container, String path) throws WriterException, IOException, NotFoundException, FontFormatException {
+    public static File createQRImages(QRCodeGenerationModel qrGenRequest) throws WriterException, IOException, NotFoundException, FontFormatException {
 
         List<File> fileList = new ArrayList<File>();
 
-        List<String> dataList = qrGenRequest.getData();
-        List<String> textList = qrGenRequest.getText();
-        List<String> fileNameList = qrGenRequest.getFileName();
+        String data = qrGenRequest.getData();
+        String text = qrGenRequest.getText();
+        String fileName = qrGenRequest.getFileName();
 
         String errorCorrectionLevel = qrGenRequest.getErrorCorrectionLevel();
         int pixelsPerBlock = qrGenRequest.getPixelsPerBlock();
@@ -53,28 +53,23 @@ public class QRCodeImageGenerator {
         int qrMarginBottom = qrGenRequest.getQrCodeMarginBottom();
         int imageMargin = qrGenRequest.getImageMargin();
 
-        for (int i = 0; i < dataList.size(); i++) {
-            String data = dataList.get(i);
-            String text = textList.get(i);
-            String fileName = fileNameList.get(i);
 
-            BufferedImage qrImage = generateBaseImage(data, errorCorrectionLevel, pixelsPerBlock, qrMargin, colorModel);
+        BufferedImage qrImage = generateBaseImage(data, errorCorrectionLevel, pixelsPerBlock, qrMargin, colorModel);
 
-            if (null != text || "" != text) {
-                BufferedImage textImage = getTextImage(text, fontName, fontSize, tracking, colorModel);
-                qrImage = addTextToBaseImage(qrImage, textImage, colorModel, qrMargin, pixelsPerBlock, qrMarginBottom, imageMargin);
-            }
-
-            if (borderSize > 0) {
-                drawBorder(qrImage, borderSize, imageMargin);
-            }
-
-            File finalImageFile = new File(fileName + "." + imageFormat);
-            ImageIO.write(qrImage, imageFormat, finalImageFile);
-            fileList.add(finalImageFile);
+        if (null != text || "" != text) {
+            BufferedImage textImage = getTextImage(text, fontName, fontSize, tracking, colorModel);
+            qrImage = addTextToBaseImage(qrImage, textImage, colorModel, qrMargin, pixelsPerBlock, qrMarginBottom, imageMargin);
         }
 
-        return fileList;
+        if (borderSize > 0) {
+            drawBorder(qrImage, borderSize, imageMargin);
+        }
+
+        File finalImageFile = new File(fileName + "." + imageFormat);
+        ImageIO.write(qrImage, imageFormat, finalImageFile);
+        fileList.add(finalImageFile);
+
+        return finalImageFile;
 
     }
 
@@ -116,7 +111,7 @@ public class QRCodeImageGenerator {
         int mergedWidth = firstMatrix.getWidth() + (2 * imageMargin);
         int mergedHeight = firstMatrix.getHeight() + secondMatrix.getHeight() + (2 * imageMargin);
         int defaultBottomMargin = pixelsPerBlock * qrMargin;
-        int marginToBeRemoved = qrMarginBottom > defaultBottomMargin ? 0 : (defaultBottomMargin-qrMarginBottom);
+        int marginToBeRemoved = qrMarginBottom > defaultBottomMargin ? 0 : (defaultBottomMargin - qrMarginBottom);
         BitMatrix mergedMatrix = new BitMatrix(mergedWidth, mergedHeight - marginToBeRemoved);
 
         for (int x = 0; x < firstMatrix.getWidth(); x++) {
@@ -217,7 +212,7 @@ public class QRCodeImageGenerator {
         BufferedImage image = new BufferedImage(1, 1, getImageType(colorModel));
 
         //Font basicFont = new Font(fontName, Font.BOLD, fontSize);
-        String fontFile = "/"+fontName+".ttf";
+        String fontFile = "/" + fontName + ".ttf";
 
         InputStream fontStream = QRCodeImageGenerator.class.getResourceAsStream(fontFile);
         Font basicFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);

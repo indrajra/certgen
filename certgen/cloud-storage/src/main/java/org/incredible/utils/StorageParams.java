@@ -42,7 +42,6 @@ public class StorageParams {
 
 
     public static String upload(String container, String path, File file, boolean isDirectory) {
-        System.out.println(storageService.attempt());
         CloudStorage cloudStorage = new CloudStorage(storageService);
         return cloudStorage.uploadFile(container, path, file, isDirectory);
     }

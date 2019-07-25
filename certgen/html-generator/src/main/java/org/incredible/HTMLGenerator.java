@@ -3,12 +3,14 @@ package org.incredible;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
-import org.incredible.pojos.ob.Assertion;
+import org.incredible.pojos.CertificateExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,59 +19,63 @@ public class HTMLGenerator {
 
     private static Logger logger = LoggerFactory.getLogger(HTMLGenerator.class);
 
-    private HTMLModel htmlModel = new HTMLModel();
+    private String HtmlString;
 
-//todo velocity.init() should called once if template is same
-    public void generateHTML(Assertion assertion, String htmlString) {
+    private HashSet<String> htmlReferenceVariable;
 
-        String id = assertion.getId().split("Certificate/")[1];
-        mapToHTMLModel(assertion);
+
+    public HTMLGenerator(String htmlString) {
+        HtmlString = htmlString;
+        htmlReferenceVariable = HTMLTemplateProvider.storeAllHTMLTemplateVariables(HtmlString);
+    }
+
+
+    public void initVelocity() {
         Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         Velocity.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         Velocity.init();
+    }
 
-        /**  create a context and add data **/
+    /**
+     * create velocity context  where Velocity.init() called once
+     *
+     * @param certificateExtension list of certificates
+     */
+
+    public void createContext(CertificateExtension certificateExtension) {
+        initVelocity();
         VelocityContext context = new VelocityContext();
-
-        HTMLTemplateVariables htmlMacros[] = HTMLTemplateVariables.values();
-
-        for (int i = 0; i < htmlMacros.length; i++) {
-            String methodName = "get" + capitalize(htmlMacros[i].toString());
+        HTMLVarResolver htmlVarResolver = new HTMLVarResolver(certificateExtension);
+        htmlReferenceVariable = HTMLTemplateProvider.storeAllHTMLTemplateVariables(HtmlString);
+        Iterator<String> iterator = htmlReferenceVariable.iterator();
+        while (iterator.hasNext()) {
+            String macro = iterator.next().substring(1);
             try {
-                Method method = htmlModel.getClass().getMethod(methodName);
+                Method method = htmlVarResolver.getClass().getMethod("get" + capitalize(macro));
                 method.setAccessible(true);
-                context.put(htmlMacros[i].toString(), method.invoke(htmlModel));
-                Writer writer = new FileWriter(new File(id + ".html"));
-                Velocity.evaluate(context, writer, "velocity", htmlString);
-                writer.flush();
-                writer.close();
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | IOException e) {
+                context.put(macro, method.invoke(htmlVarResolver));
+                generateHTML(context, certificateExtension.getId().split("Certificate/")[1] + ".html");
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
                 logger.info("exception while generating html for certificate {}", e.getMessage());
             }
         }
+
     }
 
-    /**
-     * to read html mapper
-     */
-
-
-    private void mapToHTMLModel(Assertion assertion) {
-        String id = assertion.getId().split("Certificate/")[1];
-        File file = new File(id + ".png");
-        String path = file.getPath();
-        //todo html model needs to be dynamic
-        htmlModel.setCourse(assertion.getBadge().getName());
-        htmlModel.setRecipient(assertion.getRecipient().getName());
-        htmlModel.setDated(assertion.getIssuedOn());
-        htmlModel.setImg(path);
-        htmlModel.setTitle("Certificate");
+    private void generateHTML(VelocityContext context, String id) {
+        try {
+            Writer writer = new FileWriter(new File(id));
+            Velocity.evaluate(context, writer, "velocity", HtmlString);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            logger.info("IO exception while creating html file :{}", e.getMessage());
+        }
     }
 
     private String capitalize(String input) {
-        String output = input.substring(0, 1).toUpperCase() + input.substring(1);
-        return output;
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 
 

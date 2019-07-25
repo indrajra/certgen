@@ -2,6 +2,7 @@ package org.incredible.certProcessor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.incredible.pojos.ob.Profile;
 
 import java.security.KeyPair;
 
@@ -24,13 +25,17 @@ public class CertModel {
     private String certificateName;
     private String certificateDescription;
     private String certificateLogo;
+    /**
+     * Mandatory, issuedDate of the certificate
+     */
     private String issuedDate;
+    /**
+     * Mandatory, issuer  the certificate
+     */
     private String issuer;
     private String validFrom;
     private String expiry;
-
-    // todo array of issuer object
-    private String signatoryList;
+    private Profile[] signatoryList;
     private String assessedOn;
 
     private static ObjectMapper mapper = new ObjectMapper();
@@ -111,11 +116,11 @@ public class CertModel {
         return this;
     }
 
-    public String getSignatoryList() {
+    public Profile[] getSignatoryList() {
         return signatoryList;
     }
 
-    public void setSignatoryList(String signatoryList) {
+    public void setSignatoryList(Profile[] signatoryList) {
         this.signatoryList = signatoryList;
     }
 

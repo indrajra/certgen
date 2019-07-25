@@ -22,7 +22,6 @@ public class CloudStorage {
 
 
     public static String uploadFile(String container, String path, File file, boolean isDirectory) {
-        //todo take from config
         int retryCount = 2;
         String objectKey = path + file.getName();
         String url = storageService.upload(container,

@@ -1,26 +1,47 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/Users/aishwarya/workspace/certgen/csvProcessor/src/main/resources/custom.css">
     <title>$title</title>
 </head>
 <body style="text-align:-webkit-center;">
+<br/>
+<div class="container">
+    <div class="border">
+        <div class="row">
+            <div class="align">
+                <h2>Ekstep foundation</h2>
+                <p>7th Cross Road, KHB Block Koramangala, Koramangala 4-B Block,
+                    Bangalore, Karnataka</p>
+                <img src="$img"
+                     alt="image" style="width: 10rem"/>
+            </div>
 
-<div style="width:800px; height:600px; padding:20px; text-align:center; border: 10px solid #787878;display: -webkit-inline-box;">
-    <div style="width:750px; height:550px; padding:20px; text-align:center; border: 5px solid #787878">
-        <span style="font-size:50px; font-weight:bold">Certificate of Completion</span>
-        <br><br>
-        <span style="font-size:25px"><i>This is to certify that</i></span>
-        <br><br>
-        <span style="font-size:30px"><b>$recipient</b></span><br/><br/>
-        <span style="font-size:25px"><i>has completed the course</i></span> <br/><br/>
-        <span style="font-size:30px">$course</span> <br/><br/>
-        <!--<span style="font-size:20px">with score of <b>$grade</b></span> <br/><br/><br/><br/>-->
-        <span style="font-size:25px"><i>$dated</i></span><br>
-        <span><img src=$img alt=""></span>
+        </div>
+        <div class="align">
+            <h2>Certificate of Completion</h2>
+        </div>
+        <div class="align">
+            <h4>This certificate is here by bestowed upon</h4>
+            <h1>$recipient</h1>
+            <p>for completing training for <span>$course</span> conducted on ,<span>$dateInFormatOfWords</span></p>
+            <p>This activity was awarded by:</p>
+        </div>
+        <div class="grid">
+            <div class="signatory1">
+                <h4>signatory</h4>
+                <h5>signatoryName</h5>
+            </div>
+            <div class="signatory2">
+                <h4>signatory</h4>
+                <h5>signatoryName</h5>
+            </div>
+        </div>
     </div>
-</div>
-</body>
 
+</div>
+
+</body>
 </html>
