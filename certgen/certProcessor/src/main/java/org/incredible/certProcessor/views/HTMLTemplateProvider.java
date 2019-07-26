@@ -20,7 +20,7 @@ public abstract class HTMLTemplateProvider {
     private static HashSet<String> htmlReferenceVariable = new HashSet<>();
 
 
-    public Boolean checkHtmlTemplateIsValid(String htmlString) {
+    public static Boolean checkHtmlTemplateIsValid(String htmlString) {
         HTMLTemplateValidator htmlTemplateValidator = new HTMLTemplateValidator(storeAllHTMLTemplateVariables(htmlString));
         return htmlTemplateValidator.validate();
     }
