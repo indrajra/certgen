@@ -5,19 +5,17 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.WriterException;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.ekstep.QRCodeGenerationModel;
-import org.ekstep.util.QRCodeImageGenerator;
 
-import org.incredible.HTMLGenerator;
-import org.incredible.HTMLTemplateFile;
-import org.incredible.PdfConverter;
 import org.incredible.certProcessor.CertModel;
 import org.incredible.certProcessor.CertificateFactory;
-import org.incredible.certificateGenerator.CertificateGenerator;
+import org.incredible.certProcessor.qrcode.QRCodeGenerationModel;
+import org.incredible.certProcessor.qrcode.utils.QRCodeImageGenerator;
+import org.incredible.certProcessor.signature.KeyGenerator;
+import org.incredible.certProcessor.store.StorageParams;
+import org.incredible.certProcessor.views.HTMLGenerator;
+import org.incredible.certProcessor.views.HTMLTemplateFile;
+import org.incredible.certProcessor.views.PdfConverter;
 import org.incredible.pojos.CertificateExtension;
-import org.incredible.pojos.ob.exeptions.InvalidDateFormatException;
-import org.incredible.utils.KeyGenerator;
-import org.incredible.utils.StorageParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -277,7 +275,7 @@ public class Main {
      */
 
     private static String uploadFileToCloud(File file) {
-        String url = StorageParams.upload(properties.getProperty("CONTAINER_NAME"), "", file, false);
+        String url = StorageParams.upload(property.get("CONTAINER_NAME"), "", file, false);
         return url;
 
     }

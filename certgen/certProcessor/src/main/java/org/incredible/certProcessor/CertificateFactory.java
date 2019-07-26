@@ -1,6 +1,7 @@
 package org.incredible.certProcessor;
 
 import org.incredible.builders.*;
+import org.incredible.certProcessor.signature.SignatureHelper;
 import org.incredible.pojos.CertificateExtension;
 import org.incredible.pojos.RankAssessment;
 import org.incredible.pojos.ob.Criteria;
@@ -18,7 +19,6 @@ import java.util.UUID;
 
 import org.incredible.pojos.ob.VerificationObject;
 import org.incredible.pojos.ob.exeptions.InvalidDateFormatException;
-import org.incredible.utils.SignatureHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,12 +35,12 @@ public class CertificateFactory {
 
     public CertificateExtension createCertificate(CertModel certModel, String context, HashMap<String, String> properties) throws InvalidDateFormatException {
 
-        uuid = properties.get("DOMAIN") + UUID.randomUUID().toString();
+        uuid = properties.get("DOMAIN_PATH") + UUID.randomUUID().toString();
 
         CertificateExtensionBuilder certificateExtensionBuilder = new CertificateExtensionBuilder(context);
         CompositeIdentityObjectBuilder compositeIdentityObjectBuilder = new CompositeIdentityObjectBuilder(context);
         BadgeClassBuilder badgeClassBuilder = new BadgeClassBuilder(context);
-        AssessedEvidenceBuilder assessedEvidenceBuilder = new AssessedEvidenceBuilder(properties.get("AssessedDomain"));
+        AssessedEvidenceBuilder assessedEvidenceBuilder = new AssessedEvidenceBuilder(properties.get("ASSESSED_DOMAIN"));
         IssuerBuilder issuerBuilder = new IssuerBuilder(context);
         SignatureBuilder signatureBuilder = new SignatureBuilder();
 
@@ -56,7 +56,7 @@ public class CertificateFactory {
 
         //todo decide hosted or signed badge based on config
 
-        String[] type = new String[]{properties.get("typeOfVerification")};
+        String[] type = new String[]{properties.get("VERIFICATION_TYPE")};
         VerificationObject verificationObject = new VerificationObject();
         verificationObject.setType(type);
 
@@ -68,13 +68,13 @@ public class CertificateFactory {
                 setType(new String[]{"phone"});
 
 
-        issuerBuilder.setId(properties.get("IssuerUrl")).setName(certModel.getIssuer());
+        issuerBuilder.setId(properties.get("ISSUER_URL")).setName(certModel.getIssuer());
         /**
          * badge class object
          * **/
 
         badgeClassBuilder.setName(certModel.getCourseName()).setDescription(certModel.getCertificateDescription())
-                .setId(properties.get("BadgeUrl")).setCriteria(criteria)
+                .setId(properties.get("BADGE_URL")).setCriteria(criteria)
                 .setImage(certModel.getCertificateLogo()).
                 setIssuer(issuerBuilder.build());
 

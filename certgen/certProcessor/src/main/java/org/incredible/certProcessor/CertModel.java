@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.incredible.pojos.ob.Profile;
 
-import java.security.KeyPair;
-
 
 public class CertModel {
 
