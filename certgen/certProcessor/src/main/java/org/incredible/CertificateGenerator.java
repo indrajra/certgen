@@ -39,7 +39,7 @@ public class CertificateGenerator {
     private CertificateFactory certificateFactory = new CertificateFactory();
 
 
-    public String createCertificate(CertModel certModel, HTMLTemplateProvider htmlTemplateProvider , String config, String signatureConfig) throws InvalidDateFormatException {
+    public String createCertificate(CertModel certModel, HTMLTemplateProvider htmlTemplateProvider, String config, String signatureConfig) throws InvalidDateFormatException {
 
         CertificateExtension certificateExtension = certificateFactory.createCertificate(certModel, context, properties);
         generateQRCodeForCertificate(certificateExtension);

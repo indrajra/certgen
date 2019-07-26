@@ -34,7 +34,7 @@ public class HTMLTemplateValidator {
             } else throw new Exception("HTML template is not valid");
 
         } catch (Exception e) {
-            logger.error("Exception while validating html template due of following invariables {} {}", invalidVariables, e.getMessage());
+            logger.error("Exception while validating html template due to following invariables {} {}", invalidVariables, e.getMessage());
             htmlTemplateVariable.clear();
             return false;
         }
