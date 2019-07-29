@@ -164,6 +164,7 @@ public class Main {
             property.put(key, value);
         }
 
+
         for (int row = 0; row < certModelsList.size(); row++) {
             try {
                 CertificateExtension certificate = certificateFactory.createCertificate(certModelsList.get(row), context, property);
@@ -171,8 +172,8 @@ public class Main {
                 File file = new File(certificate.getId().split("Certificate/")[1] + ".json");
                 mapper.writeValue(file, certificate);
                 String url = uploadFileToCloud(file);
-                generateQRCodeForCertificate(certificate, certificate.getId() + ".json");
-                generateHtmlTemplateForCertificate(certificate);
+                generateQRCode(certificate, certificate.getId() + ".json");
+                generateHtml(certificate);
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.error("exception while creating certificates {}", e.getMessage());
@@ -182,7 +183,7 @@ public class Main {
 
 
     /**
-     * set each field to inputmodel object
+     * set each field to inputModel object
      **/
 
     public static CertModel getInputModel(CSVRecord csvRecord) {
@@ -209,7 +210,7 @@ public class Main {
     /**
      * to generateQRCode for certificate
      **/
-    private static void generateQRCodeForCertificate(CertificateExtension certificateExtension, String url) {
+    private static void generateQRCode(CertificateExtension certificateExtension, String url) {
         File Qrcode;
         QRCodeGenerationModel qrCodeGenerationModel = new QRCodeGenerationModel();
         qrCodeGenerationModel.setText("123456");
@@ -228,12 +229,12 @@ public class Main {
     /**
      * generate Html Template for certificate
      **/
-    private static void generateHtmlTemplateForCertificate(CertificateExtension certificateExtension) throws Exception {
+    private static void generateHtml(CertificateExtension certificateExtension) throws Exception {
         String id = certificateExtension.getId().split("Certificate/")[1];
         HTMLTemplateFile htmlTemplateFile = new HTMLTemplateFile(templateName);
-        HTMLGenerator htmlTemplateGenerator = new HTMLGenerator(htmlTemplateFile.getTemplateContent());
+        HTMLGenerator htmlGenerator = new HTMLGenerator(htmlTemplateFile.getTemplateContent());
         if (htmlTemplateFile.checkHtmlTemplateIsValid(htmlTemplateFile.getTemplateContent())) {
-            htmlTemplateGenerator.generateHTMLForCertificate(certificateExtension);
+            htmlGenerator.generate(certificateExtension);
             File file = new File(id + ".html");
             uploadFileToCloud(file);
             convertHtmlToPdf(file, id);

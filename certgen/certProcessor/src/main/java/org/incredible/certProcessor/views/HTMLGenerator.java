@@ -42,7 +42,7 @@ public class HTMLGenerator {
      * @param certificateExtension
      */
 
-    public void generateHTMLForCertificate(CertificateExtension certificateExtension) {
+    public void generate(CertificateExtension certificateExtension) {
         initVelocity();
         VelocityContext context = new VelocityContext();
         HTMLVarResolver htmlVarResolver = new HTMLVarResolver(certificateExtension);
@@ -54,7 +54,7 @@ public class HTMLGenerator {
                 Method method = htmlVarResolver.getClass().getMethod("get" + capitalize(macro));
                 method.setAccessible(true);
                 context.put(macro, method.invoke(htmlVarResolver));
-                createHTML(context, certificateExtension.getId().split("Certificate/")[1] + ".html");
+                createHTMLFile(context, certificateExtension.getId().split("Certificate/")[1] + ".html");
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
                 logger.info("exception while generating html for certificate {}", e.getMessage());
@@ -63,7 +63,7 @@ public class HTMLGenerator {
 
     }
 
-    private void createHTML(VelocityContext context, String id) {
+    private void createHTMLFile(VelocityContext context, String id) {
         try {
             Writer writer = new FileWriter(new File(id));
             Velocity.evaluate(context, writer, "velocity", HtmlString);

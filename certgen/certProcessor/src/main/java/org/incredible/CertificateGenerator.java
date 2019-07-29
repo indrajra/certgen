@@ -44,7 +44,7 @@ public class CertificateGenerator {
         generateQRCodeForCertificate(certificateExtension);
         if (htmlTemplateProvider.checkHtmlTemplateIsValid(htmlTemplateProvider.getTemplateContent())) {
             HTMLGenerator htmlGenerator = new HTMLGenerator(htmlTemplateProvider.getTemplateContent());
-            htmlGenerator.generateHTMLForCertificate(certificateExtension);
+            htmlGenerator.generate(certificateExtension);
             return certificateExtension.getId().split("Certificate/")[1];
         } else return null;
     }
