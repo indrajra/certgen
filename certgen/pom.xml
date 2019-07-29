@@ -19,11 +19,7 @@
     <artifactId>certgen</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>pojos</module>
         <module>certProcessor</module>
-        <module>qrcode-image-generator</module>
-        <module>html-generator</module>
-        <module>cloud-storage</module>
     </modules>
 
     <build>
