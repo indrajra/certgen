@@ -233,7 +233,7 @@ public class Main {
         HTMLTemplateFile htmlTemplateFile = new HTMLTemplateFile(templateName);
         HTMLGenerator htmlTemplateGenerator = new HTMLGenerator(htmlTemplateFile.getTemplateContent());
         if (htmlTemplateFile.checkHtmlTemplateIsValid(htmlTemplateFile.getTemplateContent())) {
-            htmlTemplateGenerator.createContext(certificateExtension);
+            htmlTemplateGenerator.generateHtmlTemplateForCertificate(certificateExtension);
             File file = new File(id + ".html");
             uploadFileToCloud(file);
             convertHtmlToPdf(file, id);
